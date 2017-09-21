@@ -4,91 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.tongchaitonsau.smartsmallshowroom.MainActivity">
+    tools:context="com.example.tongchaitonsau.smartsmallshowroom.MainActivity"
+    android:id="@+id/main_i">
 
-    <Button
-        style="@style/Item_style"
-        android:id="@+id/item1_i"
-        android:text="Item1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.2"
-        app:layout_constraintHorizontal_bias="0.05" />
-    <Button
-        style="@style/Item_style"
-        android:text="Item2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.2"
-        app:layout_constraintHorizontal_bias="0.5" />
-    <Button
-        style="@style/Item_style"
-        android:text="Item3"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.2"
-        app:layout_constraintHorizontal_bias="0.95" />
 
-    <Button
-        style="@style/Item_style"
-        android:text="Item4"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5"
-        app:layout_constraintHorizontal_bias="0.05" />
-    <Button
-        style="@style/Item_style"
-        android:text="Item5"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5"
-        app:layout_constraintHorizontal_bias="0.5" />
-    <Button
-        style="@style/Item_style"
-        android:text="Item6"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5"
-        app:layout_constraintHorizontal_bias="0.95" />
-    <Button
-        style="@style/Item_style"
-        android:text="Item7"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.8"
-        app:layout_constraintHorizontal_bias="0.05" />
-    <Button
-        style="@style/Item_style"
-        android:text="Item8"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.8"
-        app:layout_constraintHorizontal_bias="0.5" />
-    <Button
-        style="@style/Item_style"
-        android:text="Item9"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.8"
-        app:layout_constraintHorizontal_bias="0.95" />
+    <ViewStub
+        android:id="@+id/stub_grid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:inflatedId="@+id/showlayout"
+        android:layout="@layout/my_gridview"/>
+
 
 
 
