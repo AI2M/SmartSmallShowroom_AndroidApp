@@ -1,8 +1,10 @@
 package com.example.tongchaitonsau.smartsmallshowroom;
 
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -52,15 +55,15 @@ public class MainActivity extends AppCompatActivity {
     public List<Product> getProductList(){
         productList = new ArrayList<>();
 
-        productList.add(new Product(R.drawable.ic_library_music_black_24dp,"Item_1","200"));
-        productList.add(new Product(R.drawable.ic_library_music_black_24dp,"Item_2","200"));
-        productList.add(new Product(R.drawable.ic_library_music_black_24dp,"Item_3","200"));
-        productList.add(new Product(R.drawable.ic_library_music_black_24dp,"Item_4","200"));
-        productList.add(new Product(R.drawable.ic_library_music_black_24dp,"Item_5","200"));
-        productList.add(new Product(R.drawable.ic_library_music_black_24dp,"Item_6","200"));
-        productList.add(new Product(R.drawable.ic_library_music_black_24dp,"Item_7","200"));
-        productList.add(new Product(R.drawable.ic_library_music_black_24dp,"Item_8","200"));
-        productList.add(new Product(R.drawable.ic_library_music_black_24dp,"Item_9","200"));
+        productList.add(new Product(R.drawable.ic_music_note_black_24dp,"Item_1","","200"));
+        productList.add(new Product(R.drawable.ic_music_note_black_24dp,"Item_2","","200"));
+        productList.add(new Product(R.drawable.ic_music_note_black_24dp,"Item_3","","200"));
+        productList.add(new Product(R.drawable.ic_music_note_black_24dp,"Item_4","","200"));
+        productList.add(new Product(R.drawable.ic_music_note_black_24dp,"Item_5","","200"));
+        productList.add(new Product(R.drawable.ic_music_note_black_24dp,"Item_6","","200"));
+        productList.add(new Product(R.drawable.ic_music_note_black_24dp,"Item_7","","200"));
+        productList.add(new Product(R.drawable.ic_music_note_black_24dp,"Item_8","","200"));
+        productList.add(new Product(R.drawable.ic_music_note_black_24dp,"Item_9","","200"));
 
         return productList;
     }
@@ -91,10 +94,31 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_update:
-                Toast.makeText(getApplicationContext(),"Update",Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
+                View mView = getLayoutInflater().inflate(R.layout.dialog_update,null);
+                final EditText mPassword = (EditText) mView.findViewById(R.id.password_updated);
+                Button mLogin = (Button) mView.findViewById(R.id.button_updated);
+                mBuilder.setView(mView);
+                final AlertDialog dialog = mBuilder.create();
+                dialog.show();
+
+                mLogin.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if(mPassword.getText().toString().equals("admin")){
+                            Toast.makeText(getApplicationContext(),"Update",Toast.LENGTH_SHORT).show();
+                            dialog.cancel();
+                        }
+                        else
+                        {
+                            Toast.makeText(getApplicationContext(),"Wrong password",Toast.LENGTH_SHORT).show();
+                            mPassword.setText("");
+                        }
+                    }
+                });
                 return true;
             case R.id.action_logout:
-                Toast.makeText(getApplicationContext(),"Logout",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),"Logout",Toast.LENGTH_SHORT).show();
                 Intent logout = new Intent(MainActivity.this,LoginActivity.class);
                 startActivity(logout);
                 finish();
