@@ -25,11 +25,16 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import prefs.UserInfo;
+import prefs.UserSession;
+
 public class MainActivity extends AppCompatActivity {
     private GridView gridView;
     private GridViewAdapter gridViewAdapter;
     private ViewStub stubGrid;
     private List<Product> productList;
+    private UserInfo userInfo;
+    private UserSession userSession;
 
 
 
@@ -37,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        userInfo        = new UserInfo(this);
+        userSession     = new UserSession(this);
         stubGrid = (ViewStub) findViewById(R.id.stub_grid);
         stubGrid.inflate();
         gridView = (GridView) findViewById(R.id.my_grid);
@@ -101,11 +108,12 @@ public class MainActivity extends AppCompatActivity {
                 mBuilder.setView(mView);
                 final AlertDialog dialog = mBuilder.create();
                 dialog.show();
+                final String password = userInfo.getKeyPassword();
 
                 mLogin.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if(mPassword.getText().toString().equals("admin")){
+                        if(mPassword.getText().toString().equals(password)){
                             Toast.makeText(getApplicationContext(),"Update",Toast.LENGTH_SHORT).show();
                             dialog.cancel();
                         }
@@ -119,6 +127,8 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.action_logout:
                 //Toast.makeText(getApplicationContext(),"Logout",Toast.LENGTH_SHORT).show();
+                userSession.setLoggedin(false);
+                userInfo.clearUserInfo();
                 Intent logout = new Intent(MainActivity.this,LoginActivity.class);
                 startActivity(logout);
                 finish();
