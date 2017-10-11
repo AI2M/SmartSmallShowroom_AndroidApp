@@ -6,23 +6,31 @@ package com.example.tongchaitonsau.smartsmallshowroom;
  */
 
 public class Product {
-    private int imageId ;
+    private int id ;
     private String name;
     private String price;
+    private String detail;
 
-
-    public Product(int imageId,String name,String price){
-        this.imageId = imageId;
+    public Product(int id, String name, String detail, String price){
+        this.id = id;
         this.name = name;
         this.price  = price;
+        this.detail = detail;
+    }
+    public String getDetail() {
+        return detail;
     }
 
-    public int getImageId() {
-        return imageId;
+    public void setDetail(String detail) {
+        this.detail = detail;
     }
 
-    public void setImageId(int imageId) {
-        this.imageId = imageId;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {

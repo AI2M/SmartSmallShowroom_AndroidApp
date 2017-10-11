@@ -12,29 +12,43 @@ import android.widget.TextView;
 
 public class PurchaseActivity extends AppCompatActivity {
     private TextView name;
+    private View.OnClickListener onClickListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_purchase);
-        String pass_name = getIntent().getStringExtra("PASS_NAME");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        Button purchase = (Button) findViewById(R.id.purchase_i);
-        TextView name = (TextView) findViewById(R.id.name_pc);
+        bindView();
+        initView();
 
+    }
+
+    public void initView(){
+        initOnClickListener();
+
+        findViewById(R.id.purchase_i).setOnClickListener(onClickListener);
+    }
+    public void bindView(){
+        String pass_name = getIntent().getStringExtra("PASS_NAME");
+        name = (TextView) findViewById(R.id.name_pc);
         name.setText(pass_name);
+    }
 
-
-
-        purchase.setOnClickListener(new View.OnClickListener() {
+    public void initOnClickListener(){
+        onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent paymoney = new Intent(PurchaseActivity.this,GetmoneyActivity.class);
-                startActivity(paymoney);
+                switch (view.getId()){
+                    case R.id.purchase_i :
+                        Intent next = new Intent(PurchaseActivity.this, GetmoneyActivity.class);
+                        startActivity(next);
+                        break;
+                }
             }
-        });
+        };
     }
 
     @Override

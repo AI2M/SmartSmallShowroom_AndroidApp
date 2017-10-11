@@ -1,6 +1,8 @@
 package com.example.tongchaitonsau.smartsmallshowroom;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.nfc.Tag;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,8 +24,18 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import prefs.UserInfo;
 import prefs.UserSession;
@@ -138,4 +150,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+
 }

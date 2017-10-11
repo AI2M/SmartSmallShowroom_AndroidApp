@@ -3,17 +3,16 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp"
     android:paddingLeft="10dp"
-    android:paddingRight="10dp">
+    android:paddingRight="10dp"
+    android:background="#FFFF">
 
     <ImageView
         android:id="@+id/image_a"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:src="@drawable/ic_library_music_black_24dp"
+        android:src="@drawable/ic_music_note_black_24dp"
         />
     <TextView
         android:id="@+id/name_a"

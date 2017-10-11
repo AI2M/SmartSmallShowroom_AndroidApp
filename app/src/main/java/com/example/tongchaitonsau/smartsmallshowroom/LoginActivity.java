@@ -43,6 +43,7 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_login);
+
         init();
 
         Button login  = (Button) findViewById(R.id.login_i);
@@ -50,9 +51,7 @@ public class LoginActivity extends Activity {
             @Override
             public void onClick(View view) {
                 if (!username.getText().toString().isEmpty() || !password.getText().toString().isEmpty()){
-//                    Intent myIntent = new Intent(LoginActivity.this,MainActivity.class);
-//                    startActivity(myIntent);
-//                    finish();
+
                     String uName = username.getText().toString().trim();
                     String pass  = password.getText().toString().trim();
 
@@ -81,7 +80,7 @@ public class LoginActivity extends Activity {
         }
 
     }
-    private void init(){
+    public void init(){
         username = (EditText) findViewById(R.id.username_i);
         password = (EditText) findViewById(R.id.password_i);
         progressDialog  = new ProgressDialog(this);
