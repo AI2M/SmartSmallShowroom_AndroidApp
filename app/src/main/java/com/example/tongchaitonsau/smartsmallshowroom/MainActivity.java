@@ -2,7 +2,10 @@ package com.example.tongchaitonsau.smartsmallshowroom;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.nfc.Tag;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -40,7 +43,7 @@ import java.util.Map;
 import prefs.UserInfo;
 import prefs.UserSession;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Main.OnFragmentInteractionListener, Design.OnFragmentInteractionListener {
     private GridView gridView;
     private GridViewAdapter gridViewAdapter;
     private ViewStub stubGrid;
@@ -54,20 +57,55 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         userInfo        = new UserInfo(this);
         userSession     = new UserSession(this);
-        stubGrid = (ViewStub) findViewById(R.id.stub_grid);
-        stubGrid.inflate();
-        gridView = (GridView) findViewById(R.id.my_grid);
 
-        gridView.setOnItemClickListener(onitemclick);
-        stubGrid.setVisibility(View.VISIBLE);
+//        stubGrid = (ViewStub) findViewById(R.id.stub_grid);
+//        stubGrid.inflate();
+//        gridView = (GridView) findViewById(R.id.my_grid);
+//
+//        gridView.setOnItemClickListener(onitemclick);
+//        stubGrid.setVisibility(View.VISIBLE);
+//
+//
+//        getProductList();
+//        gridViewAdapter = new GridViewAdapter(this, R.layout.grid_item, productList);
+//        gridView.setAdapter(gridViewAdapter);
+
+        TabLayout tabLayout = (TabLayout)findViewById(R.id.tablayout);
+        tabLayout.addTab(tabLayout.newTab().setText("Design"));
+        tabLayout.addTab(tabLayout.newTab().setText("Main"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        final ViewPager viewPager = (ViewPager)findViewById(R.id.pager);
+        final PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
+        viewPager.setAdapter(adapter);
+        viewPager.setOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
 
-        getProductList();
-        gridViewAdapter = new GridViewAdapter(this, R.layout.grid_item, productList);
-        gridView.setAdapter(gridViewAdapter);
 
+
+    }
+
+    @Override
+    public void onFragmentInteraction (Uri uri){
 
     }
 

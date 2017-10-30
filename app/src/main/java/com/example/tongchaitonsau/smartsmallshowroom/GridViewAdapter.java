@@ -21,6 +21,7 @@ public class GridViewAdapter extends ArrayAdapter<Product> {
         super(context, resource, objects);
     }
 
+
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
