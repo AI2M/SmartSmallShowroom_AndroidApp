@@ -29,7 +29,7 @@ public class PurchaseActivity extends AppCompatActivity {
     public void initView(){
         initOnClickListener();
 
-        findViewById(R.id.purchase_i).setOnClickListener(onClickListener);
+       // findViewById(R.id.purchase_i).setOnClickListener(onClickListener);
     }
     public void bindView(){
         String pass_name = getIntent().getStringExtra("PASS_NAME");
@@ -41,12 +41,12 @@ public class PurchaseActivity extends AppCompatActivity {
         onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switch (view.getId()){
-                    case R.id.purchase_i :
-                        Intent next = new Intent(PurchaseActivity.this, GetmoneyActivity.class);
-                        startActivity(next);
-                        break;
-                }
+//                switch (view.getId()){
+//                    case R.id.purchase_i :
+//                        Intent next = new Intent(PurchaseActivity.this, GetmoneyActivity.class);
+//                        startActivity(next);
+//                        break;
+//                }
             }
         };
     }

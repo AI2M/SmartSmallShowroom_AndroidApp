@@ -1,7 +1,13 @@
 package com.example.tongchaitonsau.smartsmallshowroom;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.hardware.usb.UsbDevice;
+import android.hardware.usb.UsbDeviceConnection;
+import android.hardware.usb.UsbManager;
 import android.net.Uri;
 import android.nfc.Tag;
 import android.support.design.widget.TabLayout;
@@ -25,6 +31,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -35,6 +42,7 @@ import com.android.volley.toolbox.StringRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,13 +52,9 @@ import prefs.UserInfo;
 import prefs.UserSession;
 
 public class MainActivity extends AppCompatActivity implements Main.OnFragmentInteractionListener, Design.OnFragmentInteractionListener {
-    private GridView gridView;
-    private GridViewAdapter gridViewAdapter;
-    private ViewStub stubGrid;
-    private List<Product> productList;
+
     private UserInfo userInfo;
     private UserSession userSession;
-
 
 
     @Override
@@ -60,18 +64,6 @@ public class MainActivity extends AppCompatActivity implements Main.OnFragmentIn
 
         userInfo        = new UserInfo(this);
         userSession     = new UserSession(this);
-
-//        stubGrid = (ViewStub) findViewById(R.id.stub_grid);
-//        stubGrid.inflate();
-//        gridView = (GridView) findViewById(R.id.my_grid);
-//
-//        gridView.setOnItemClickListener(onitemclick);
-//        stubGrid.setVisibility(View.VISIBLE);
-//
-//
-//        getProductList();
-//        gridViewAdapter = new GridViewAdapter(this, R.layout.grid_item, productList);
-//        gridView.setAdapter(gridViewAdapter);
 
         TabLayout tabLayout = (TabLayout)findViewById(R.id.tablayout);
         tabLayout.addTab(tabLayout.newTab().setText("Design"));
@@ -99,6 +91,17 @@ public class MainActivity extends AppCompatActivity implements Main.OnFragmentIn
             }
         });
 
+        Button questionnaire  = (Button) findViewById(R.id.question_btn);
+
+        questionnaire.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent question = new Intent(MainActivity.this,Questionnaire.class);
+                startActivity(question);
+
+            }
+        });
+
 
 
 
@@ -108,36 +111,6 @@ public class MainActivity extends AppCompatActivity implements Main.OnFragmentIn
     public void onFragmentInteraction (Uri uri){
 
     }
-
-    public List<Product> getProductList(){
-        productList = new ArrayList<>();
-
-        productList.add(new Product(R.drawable.ic_music_note_black_24dp,"Item_1","","200"));
-        productList.add(new Product(R.drawable.ic_music_note_black_24dp,"Item_2","","200"));
-        productList.add(new Product(R.drawable.ic_music_note_black_24dp,"Item_3","","200"));
-        productList.add(new Product(R.drawable.ic_music_note_black_24dp,"Item_4","","200"));
-        productList.add(new Product(R.drawable.ic_music_note_black_24dp,"Item_5","","200"));
-        productList.add(new Product(R.drawable.ic_music_note_black_24dp,"Item_6","","200"));
-        productList.add(new Product(R.drawable.ic_music_note_black_24dp,"Item_7","","200"));
-        productList.add(new Product(R.drawable.ic_music_note_black_24dp,"Item_8","","200"));
-        productList.add(new Product(R.drawable.ic_music_note_black_24dp,"Item_9","","200"));
-
-        return productList;
-    }
-
-    AdapterView.OnItemClickListener onitemclick = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-            //Toast.makeText(getApplicationContext(),productList.get(i).getName(), Toast.LENGTH_SHORT).show();
-            Intent goPurchase = new Intent(MainActivity.this,PurchaseActivity.class);
-            goPurchase.putExtra("PASS_NAME",productList.get(i).getName());
-            startActivity(goPurchase);
-
-
-        }
-    };
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -177,12 +150,12 @@ public class MainActivity extends AppCompatActivity implements Main.OnFragmentIn
                 return true;
             case R.id.action_logout:
                 //Toast.makeText(getApplicationContext(),"Logout",Toast.LENGTH_SHORT).show();
-                userSession.setLoggedin(false);
-                userInfo.clearUserInfo();
-                Intent logout = new Intent(MainActivity.this,LoginActivity.class);
-                startActivity(logout);
-                finish();
-                return true;
+//                userSession.setLoggedin(false);
+//                userInfo.clearUserInfo();
+//                Intent logout = new Intent(MainActivity.this,LoginActivity.class);
+//                startActivity(logout);
+//                finish();
+//                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

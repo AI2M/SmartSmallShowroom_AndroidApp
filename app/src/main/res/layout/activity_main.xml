@@ -9,16 +9,7 @@
     android:id="@+id/main_i"
     android:background="#FFFF"
     android:orientation="vertical">
-    <android.support.v7.widget.Toolbar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/toolbar"
-        android:background="@color/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-    </android.support.v7.widget.Toolbar>
 
     <android.support.design.widget.TabLayout
         android:layout_width="match_parent"
@@ -30,20 +21,23 @@
 
     </android.support.design.widget.TabLayout>
 
+    <Button
+        android:id="@+id/question_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="แบบสอบถาม"
+        android:textSize="50px"
+        android:layout_gravity="center"/>
+
     <android.support.v4.view.ViewPager
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:id="@+id/pager">
 
-        <!--<ViewStub-->
-            <!--android:id="@+id/stub_grid"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:inflatedId="@+id/showlayout"-->
-            <!--android:layout="@layout/my_gridview"-->
-            <!--android:foregroundGravity="center"/>-->
-
     </android.support.v4.view.ViewPager>
+
+
+
 
 
 

@@ -2,19 +2,73 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context="com.example.tongchaitonsau.smartsmallshowroom.Main">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Main"
-        android:textSize="50dp"/>
-    <ViewStub
-        android:id="@+id/stub_grid"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:inflatedId="@+id/showlayout"
-        android:layout="@layout/my_gridview"
-        android:foregroundGravity="center"/>
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/connect_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Connect"/>
+            <Button
+                android:id="@+id/disconnect_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DisConnect"/>
+
+            <Button
+                android:id="@+id/send_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Open"/>
+
+            <Button
+                android:id="@+id/send_no_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Off"/>
+
+            <TextView
+                android:id="@+id/res"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="test"
+                android:textSize="40dp"
+                android:gravity="center"
+                android:paddingLeft="80dp"
+                />
+
+
+
+
+
+        </LinearLayout>
+
+        <ViewStub
+            android:id="@+id/stub_grid"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inflatedId="@+id/showlayout"
+            android:layout="@layout/my_gridview"
+            android:foregroundGravity="center"
+            />
+
+    </LinearLayout>
+
+
+
+
+
+
 </FrameLayout>

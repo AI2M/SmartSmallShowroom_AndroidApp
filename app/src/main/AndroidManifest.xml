@@ -3,6 +3,7 @@
     package="com.example.tongchaitonsau.smartsmallshowroom">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-feature android:name="android.hardware.usb.host" />
 
     <application
         android:name=".AndroidLoginController"
@@ -14,17 +15,27 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".LoginActivity">
+
+        </activity>
+        <activity
+            android:name=".PurchaseActivity"
+            android:theme="@style/AppTheme.CoustomTheme"></activity>
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+                android:resource="@xml/device_filter" />
         </activity>
-        <activity android:name=".PurchaseActivity"
-            android:theme="@style/AppTheme.CoustomTheme">
-        </activity>
-        <activity android:name=".GetmoneyActivity" />
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".Questionnaire"></activity>
     </application>
 
 </manifest>
