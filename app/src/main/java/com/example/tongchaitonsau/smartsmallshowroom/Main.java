@@ -327,6 +327,8 @@ public class Main extends Fragment{
 
             Intent goPurchase = new Intent(getActivity(),PurchaseActivity.class);
             goPurchase.putExtra("PASS_NAME",productList.get(i).getName());
+            goPurchase.putExtra("POSITION", Integer.toString(i+1));
+            goPurchase.putExtra("MUSIC_BOX_ID",productList.get(i).getId());
             startActivity(goPurchase);
         }
     };

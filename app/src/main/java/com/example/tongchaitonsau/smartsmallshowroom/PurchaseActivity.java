@@ -11,7 +11,9 @@ import android.graphics.BitmapFactory;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbManager;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -42,6 +44,12 @@ public class PurchaseActivity extends AppCompatActivity {
     private View.OnClickListener onClickListener;
     MediaPlayer music ;
 
+    MediaPlayer mediaPlayer = new MediaPlayer();
+    String myUri;
+
+    String pass_name;
+    String position;
+
     public final String ACTION_USB_PERMISSION = "com.hariharan.arduinousb.USB_PERMISSION";
     Button connect ,disconnect;
     //TextView textView;
@@ -60,8 +68,12 @@ public class PurchaseActivity extends AppCompatActivity {
         bindView();
         initView();
 
-        music.start();
-        music.setLooping(true);
+//        music.start();
+//        music.setLooping(true);
+
+        playMusicfromUrl("begin");
+
+
 
     }
 
@@ -99,24 +111,32 @@ public class PurchaseActivity extends AppCompatActivity {
         findViewById(R.id.stop_btn).setOnClickListener(onClickListener);
     }
     public void bindView(){
-        String pass_name = getIntent().getStringExtra("PASS_NAME");
+        pass_name = getIntent().getStringExtra("PASS_NAME");
+        position = getIntent().getStringExtra("POSITION");
         name = (TextView) findViewById(R.id.name_pc);
-        name.setText(pass_name);
-        music = MediaPlayer.create(this,R.raw.paino);
+        name.setText(pass_name+position);
+
+        //music = MediaPlayer.create(this,R.raw.paino);
+
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        myUri = "http://139.59.251.210/musicbox/musicbox"+position.toString()+".mp3"; // initialize Uri here
+
         play = (Button) findViewById(R.id.play_btn);
         pic_music = (ImageView) findViewById(R.id.music_box_picture);
         stop = (Button) findViewById(R.id.stop_btn);
         play.setEnabled(false);
         stop.setEnabled(true);
-        //new LoadimageTask().execute("https://wallpaperscraft.com/image/milky_way_stars_mountains_night_germany_bavaria_sky_45888_1920x1080.jpg");
+
+        new LoadimageTask().execute("http://139.59.251.210/musicbox/musicbox"+position.toString()+".jpg");
 
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        music.release();
-        music=null;
+        //music.release();
+        //music=null;
+        playMusicfromUrl("end");
     }
 
     UsbSerialInterface.UsbReadCallback mCallback = new UsbSerialInterface.UsbReadCallback() { //Defining a Callback which triggers whenever data is read.
@@ -186,8 +206,10 @@ public class PurchaseActivity extends AppCompatActivity {
 //
                 switch (view.getId()){
                     case  R.id.play_btn :
-                        music.seekTo(posmusic);
-                        music.start();
+                       // music.seekTo(posmusic);
+                        //music.start();
+                        playMusicfromUrl("start");
+
                         String string = "ok_send".toString();
                         serialPort.write(string.getBytes());
                         toast("open");
@@ -195,8 +217,10 @@ public class PurchaseActivity extends AppCompatActivity {
                         stop.setEnabled(true);
                         break;
                     case R.id.stop_btn :
-                        music.pause();
-                        posmusic = music.getCurrentPosition();
+                        //music.pause();
+                        //posmusic = music.getCurrentPosition();
+                        playMusicfromUrl("stop");
+
                         String string2 = "no_send".toString();
                         serialPort.write(string2.getBytes());
                         toast("off");
@@ -208,6 +232,41 @@ public class PurchaseActivity extends AppCompatActivity {
         };
     }
 
+    public void playMusicfromUrl(String status){
+
+        try {
+            mediaPlayer.setDataSource(getApplicationContext(), Uri.parse(myUri));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            mediaPlayer.prepare();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (status.equals("start"))
+        {
+            mediaPlayer.seekTo(posmusic);
+            mediaPlayer.start();
+        }
+        else if(status.equals("stop"))
+        {
+            mediaPlayer.pause();
+            posmusic = mediaPlayer.getCurrentPosition();
+        }
+        else if(status.equals("end"))
+        {
+            mediaPlayer.release();
+            mediaPlayer= null;
+        }
+        else  if (status.equals("begin")){
+            mediaPlayer.start();
+            mediaPlayer.setLooping(true);
+        }
+
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -217,7 +276,9 @@ public class PurchaseActivity extends AppCompatActivity {
             this.finish();
             String string2 = "no_send".toString();
             serialPort.write(string2.getBytes());
-            music.release();
+
+            //music.release();
+            playMusicfromUrl("end");
         }
         return super.onOptionsItemSelected(item);
     }
