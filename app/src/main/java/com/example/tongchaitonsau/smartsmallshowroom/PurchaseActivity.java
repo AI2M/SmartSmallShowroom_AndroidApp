@@ -1,5 +1,6 @@
 package com.example.tongchaitonsau.smartsmallshowroom;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -23,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,13 +44,16 @@ public class PurchaseActivity extends AppCompatActivity {
     Button play,stop;
     int posmusic;
     private View.OnClickListener onClickListener;
-    MediaPlayer music ;
+    //MediaPlayer music ;
 
     MediaPlayer mediaPlayer = new MediaPlayer();
+    private AudioManager audioManager = null;
     String myUri;
 
     String pass_name;
     String position;
+
+    private SeekBar volumeSeekbar = null;
 
     public final String ACTION_USB_PERMISSION = "com.hariharan.arduinousb.USB_PERMISSION";
     Button connect ,disconnect;
@@ -65,8 +70,10 @@ public class PurchaseActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+
         bindView();
         initView();
+        VolumeControls();
 
 //        music.start();
 //        music.setLooping(true);
@@ -120,6 +127,7 @@ public class PurchaseActivity extends AppCompatActivity {
 
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         myUri = "http://139.59.251.210/musicbox/musicbox"+position.toString()+".mp3"; // initialize Uri here
+
 
         play = (Button) findViewById(R.id.play_btn);
         pic_music = (ImageView) findViewById(R.id.music_box_picture);
@@ -265,6 +273,46 @@ public class PurchaseActivity extends AppCompatActivity {
             mediaPlayer.setLooping(true);
         }
 
+    }
+
+    private void VolumeControls()
+    {
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
+        try
+        {
+            volumeSeekbar = (SeekBar)findViewById(R.id.seek_bar);
+            audioManager  = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+
+            volumeSeekbar.setMax(audioManager
+                    .getStreamMaxVolume(AudioManager.STREAM_MUSIC));
+            volumeSeekbar.setProgress(audioManager
+                    .getStreamVolume(AudioManager.STREAM_MUSIC));
+
+
+            volumeSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
+            {
+                @Override
+                public void onStopTrackingTouch(SeekBar arg0)
+                {
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar arg0)
+                {
+                }
+
+                @Override
+                public void onProgressChanged(SeekBar arg0, int progress, boolean arg2)
+                {
+                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,
+                            progress, 0);
+                }
+            });
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
 
