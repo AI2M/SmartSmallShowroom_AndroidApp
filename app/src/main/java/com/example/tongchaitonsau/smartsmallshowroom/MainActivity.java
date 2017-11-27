@@ -90,21 +90,6 @@ public class MainActivity extends AppCompatActivity implements Main.OnFragmentIn
 
             }
         });
-
-        Button questionnaire  = (Button) findViewById(R.id.question_btn);
-
-        questionnaire.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent question = new Intent(MainActivity.this,Questionnaire.class);
-                startActivity(question);
-
-            }
-        });
-
-
-
-
     }
 
     @Override

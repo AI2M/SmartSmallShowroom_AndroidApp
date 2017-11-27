@@ -2,6 +2,9 @@ package prefs;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import java.lang.reflect.Array;
+
 /**
  * Created by tongchaitonsau on 10/10/2017 AD.
  */
@@ -12,6 +15,10 @@ public class UserInfo {
     private static final String KEY_USERNAME = "username";
     private static final String KEY_EMAIL = "email";
     private static final String KEY_PASSWORD = "password";
+
+
+
+
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
     Context ctx;

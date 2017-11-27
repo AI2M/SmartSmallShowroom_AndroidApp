@@ -1,16 +1,160 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.example.tongchaitonsau.smartsmallshowroom.Design">
+    android:fitsSystemWindows="true"
+    tools:context="com.example.tongchaitonsau.smartsmallshowroom.Design"
+    android:onClick="hideKeyboard"
+    >
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Design"
-        android:textSize="50dp"/>
+        android:orientation="vertical"
+        >
+
+        <Spinner
+        android:id="@+id/sex_data"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        >
+        </Spinner>
+
+        <Spinner
+        android:id="@+id/job_data"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        >
+        </Spinner>
+        <EditText
+        android:id="@+id/tel_edt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="เบอร์โทรศัพท์"
+        android:textSize="30sp"
+        android:paddingLeft="20dp"
+        android:inputType="phone"/>
+
+        <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="อายุ"
+        android:textSize="40sp"
+        android:paddingLeft="40dp"
+        />
+
+        <RadioGroup
+        android:id="@+id/age_data"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:onClick="ageclick"
+        android:paddingLeft="40dp">
+
+        <RadioButton
+        android:id="@+id/age15low_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="  ต่ำกว่า 15 ปี"
+        android:textSize="30sp"
+        android:checked="false"/>
+        <RadioButton
+        android:id="@+id/age15to20_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="  15-20 ปี"
+        android:textSize="30sp"
+        android:checked="false"/>
+
+        <RadioButton
+        android:id="@+id/age20to30_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="  21-30 ปี"
+        android:textSize="30sp"
+        android:checked="false"/>
+        <RadioButton
+        android:id="@+id/age30to40_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="  31-40 ปี"
+        android:textSize="30sp"
+        android:checked="false"/>
+        <RadioButton
+        android:id="@+id/age40up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="  41 ปีขั้นไป"
+        android:textSize="30sp"
+        android:checked="false"/>
+
+        </RadioGroup>
+
+        <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="รายได้ต่อเดือน"
+        android:textSize="40sp"
+        android:paddingLeft="40dp"
+        />
+        <RadioGroup
+        android:id="@+id/salary_data"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:onClick="salaryclick"
+        android:paddingLeft="40dp">
+
+        <RadioButton
+        android:id="@+id/salary1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="  ตำกว่า10,000 บาท"
+        android:textSize="30sp"
+        android:checked="false"/>
+        <RadioButton
+        android:id="@+id/salary2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="  10000-20000 บาท"
+        android:textSize="30sp"
+        android:checked="false"/>
+
+        <RadioButton
+        android:id="@+id/salary3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="  20001-30000 บาท"
+        android:textSize="30sp"
+        android:checked="false"/>
+        <RadioButton
+        android:id="@+id/salary4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="  30001-40000 บาท"
+        android:textSize="30sp"
+        android:checked="false"/>
+        <RadioButton
+        android:id="@+id/salary5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="  40001 บาทขึ้นไป"
+        android:textSize="30sp"
+        android:checked="false"/>
+
+        </RadioGroup>
+        <Button
+        android:id="@+id/submit_question"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ส่งแบบสอบถาม"
+        android:textSize="30sp"/>
+
+    </LinearLayout>
 
 
-</LinearLayout>
+
+</FrameLayout>
