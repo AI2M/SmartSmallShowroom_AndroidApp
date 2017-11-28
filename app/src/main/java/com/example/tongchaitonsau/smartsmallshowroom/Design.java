@@ -1,5 +1,6 @@
 package com.example.tongchaitonsau.smartsmallshowroom;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -19,6 +20,17 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -40,11 +52,15 @@ public class Design extends Fragment implements View.OnClickListener {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private String TAG = Design.class.getSimpleName();
 
     RadioButton rb_salary;
     RadioGroup rg_salary;
     EditText tel;
     Button submit;
+
+    private String sex_,job_,age_,phone_num_,salary_;
+    private ProgressDialog progressDialog;
 
     public Design() {
         // Required empty public constructor
@@ -83,9 +99,11 @@ public class Design extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_design, container, false);
 
+        progressDialog  = new ProgressDialog(getActivity());
         this.getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         tel =  (EditText)rootView.findViewById(R.id.tel_edt);
+        //submit = (Button)rootView.findViewById(R.id.submit_question);
 
         Sex(rootView);
         Job(rootView);
@@ -106,6 +124,8 @@ public class Design extends Fragment implements View.OnClickListener {
         rootView.findViewById(R.id.salary4).setOnClickListener(this);
         rootView.findViewById(R.id.salary5).setOnClickListener(this);
 
+        rootView.findViewById(R.id.submit_question).setOnClickListener(this);
+
 
         return rootView;
     }
@@ -117,37 +137,57 @@ public class Design extends Fragment implements View.OnClickListener {
             //age
 
             case R.id.age15low_data:
-                Toast.makeText(getActivity(), "น้อยกว่า15", Toast.LENGTH_LONG ).show();
+                //Toast.makeText(getActivity(), "น้อยกว่า15", Toast.LENGTH_LONG ).show();
+                age_ = "less than 15";
                 break;
             case R.id.age15to20_data:
-                Toast.makeText(getActivity(), "15-20", Toast.LENGTH_LONG ).show();
+                //Toast.makeText(getActivity(), "15-20", Toast.LENGTH_LONG ).show();
+                age_ = "15-20";
                 break;
             case R.id.age20to30_data:
-                Toast.makeText(getActivity(), "21-30", Toast.LENGTH_LONG ).show();
+                //.makeText(getActivity(), "21-30", Toast.LENGTH_LONG ).show();
+                age_ = "21-30";
                 break;
             case R.id.age30to40_data:
-                Toast.makeText(getActivity(), "31-40", Toast.LENGTH_LONG ).show();
+                //Toast.makeText(getActivity(), "31-40", Toast.LENGTH_LONG ).show();
+                age_ = "31-40";
                 break;
             case R.id.age40up:
-                Toast.makeText(getActivity(), "มากกว่า41", Toast.LENGTH_LONG ).show();
+                //Toast.makeText(getActivity(), "มากกว่า41", Toast.LENGTH_LONG ).show();
+                age_ = "more than 41";
                 break;
 
             //salary
             case R.id.salary1:
-                Toast.makeText(getActivity(), "น้อบกว่า10000", Toast.LENGTH_LONG ).show();
+                //Toast.makeText(getActivity(), "น้อบกว่า10000", Toast.LENGTH_LONG ).show();
+                salary_ = "less than 10000";
                 break;
             case R.id.salary2:
-                Toast.makeText(getActivity(), "10001-20000", Toast.LENGTH_LONG ).show();
+                //Toast.makeText(getActivity(), "10001-20000", Toast.LENGTH_LONG ).show();
+                salary_ = "10001-20000";
                 break;
             case R.id.salary3:
-                Toast.makeText(getActivity(), "20001-30000", Toast.LENGTH_LONG ).show();
+                //Toast.makeText(getActivity(), "20001-30000", Toast.LENGTH_LONG ).show();
+                salary_ = "20001-30000";
                 break;
             case R.id.salary4:
-                Toast.makeText(getActivity(), "30001-40000", Toast.LENGTH_LONG ).show();
+                //Toast.makeText(getActivity(), "30001-40000", Toast.LENGTH_LONG ).show();
+                salary_ = "30001-40000";
                 break;
             case R.id.salary5:
-                Toast.makeText(getActivity(), "มากกว่า40001", Toast.LENGTH_LONG ).show();
+                //Toast.makeText(getActivity(), "มากกว่า40001", Toast.LENGTH_LONG ).show();
+                salary_ = "more than 40001";
                 break;
+            //button
+
+            case R.id.submit_question:
+                if(tel.getText().toString().isEmpty()){
+                    toast("please enter phone number");
+                }
+                else {
+                    phone_num_ = tel.getText().toString();
+                    storeCustomer(sex_,job_,age_,phone_num_,salary_);
+                }
 
 
         }
@@ -174,10 +214,14 @@ public class Design extends Fragment implements View.OnClickListener {
                 if(i == 0){
                     //male
                     Log.d("sex = ", "male");
+                    sex_= "male";
+                    //toast("male");
                 }
                 else if(i == 1){
                     //female
                     Log.d("sex = ", "female");
+                    sex_= "female";
+                    //toast("female");
                 }
             }
 
@@ -200,12 +244,33 @@ public class Design extends Fragment implements View.OnClickListener {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(i == 0){
-                    //male
-                    Log.d("job = ", "a");
+                    job_ = "other";
+                   // toast("other");
+
                 }
                 else if(i == 1){
-                    //female
-                    Log.d("job = ", "b");
+                    job_ = "government official";
+                    //toast("government official");
+                }
+                else if(i == 2){
+                    job_ = "nurse";
+                    //toast("nurse");
+                }
+                else if(i == 3){
+                    job_ = "doctor";
+                    //toast("doctor");
+                }
+                else if(i == 4){
+                    job_ = "personal business";
+                    //toast("personal business");
+                }
+                else if(i == 5){
+                    job_ = "merchant";
+                    //toast("merchant");
+                }
+                else if(i == 6){
+                    job_ = "officer";
+                    //toast("officer");
                 }
             }
 
@@ -214,6 +279,88 @@ public class Design extends Fragment implements View.OnClickListener {
 
             }
         });
+    }
+    //store data into database
+
+    private void storeCustomer (final String sex, final String job, final String age
+            , final String phone_num, final String salary){
+        // Tag used to cancel the request
+        String tag_string_req = "req_storecustomer";
+        progressDialog.setMessage("Storing up...");
+        progressDialog.show();
+
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                Utils.STORECUSTOMER_URL, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "addCustomer Response: " + response);
+
+                try {
+
+                    JSONObject jObj = new JSONObject(response);
+                    boolean error = jObj.getBoolean("error");
+
+                    // Check for error node in json
+                    if (!error) {
+                        JSONObject Customer = jObj.getJSONObject("Customer");
+                        String sex = Customer.getString("sex");
+                        String job = Customer.getString("job");
+                        String age = Customer.getString("age");
+                        String phone_num = Customer.getString("phone_num");
+                        String  salary = Customer.getString("salary");
+
+
+                    } else {
+                        // Error in login. Get the error message
+                        String errorMsg = jObj.getString("error_msg");
+                        //Log.d("error ---------", errorMsg);
+                        toast(errorMsg);
+                        progressDialog.hide();
+                    }
+                } catch (JSONException e) {
+                    // JSON error
+                    e.printStackTrace();
+                    progressDialog.hide();
+                    toast("Send Questionnaire Success");
+                    //Log.d("error ---------2", e.getMessage());
+                    //toast("Json error: " + e.getMessage());
+
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Login Error: " + error.getMessage());
+                toast("Unknown Error occurred");
+                progressDialog.hide();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting parameters to login url
+                Map<String, String> params = new HashMap<>();
+                params.put("sex", sex);
+                params.put("job", job);
+                params.put("age", String.valueOf(age));
+                params.put("phone_num", phone_num);
+                params.put("salary", String.valueOf(salary));
+
+                return params;
+            }
+
+        };
+
+        // Adding request to request queue
+        AndroidLoginController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+
+    private void toast(String x){
+        Toast.makeText(getActivity(), x, Toast.LENGTH_SHORT).show();
     }
 
     //hide keyboard

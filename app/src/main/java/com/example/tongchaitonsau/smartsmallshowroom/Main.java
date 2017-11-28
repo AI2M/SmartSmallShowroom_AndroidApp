@@ -337,8 +337,8 @@ public class Main extends Fragment{
 
     private void getData(final String showroom_id){
         // Tag used to cancel the request
-        String tag_string_req = "req_login";
-        progressDialog.setMessage("Logging in...");
+        String tag_string_req = "req_getdata";
+        progressDialog.setMessage("getting data...");
         progressDialog.show();
 
 
@@ -347,7 +347,7 @@ public class Main extends Fragment{
 
             @Override
             public void onResponse(String response) {
-                Log.d(TAG, "Login Response: " + response.toString());
+                Log.d(TAG, "get data Response: " + response.toString());
 
                 try {
                     JSONObject jObj = new JSONObject(response);
