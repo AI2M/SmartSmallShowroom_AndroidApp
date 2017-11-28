@@ -28,7 +28,8 @@ public class Questionnaire extends AppCompatActivity {
         setContentView(R.layout.activity_questionnaire);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        //this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 
     }
@@ -47,10 +48,10 @@ public class Questionnaire extends AppCompatActivity {
     //hide keyboard
 
 
-    public void hideKeyboard(View view){
-        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Questionnaire.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
+//    public void hideKeyboard(View view){
+//        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Questionnaire.INPUT_METHOD_SERVICE);
+//        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+//    }
 
 
 }

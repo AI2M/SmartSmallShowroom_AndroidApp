@@ -217,7 +217,6 @@ public class PurchaseActivity extends AppCompatActivity {
                        // music.seekTo(posmusic);
                         //music.start();
                         playMusicfromUrl("start");
-
                         String string = "ok_send".toString();
                         serialPort.write(string.getBytes());
                         toast("open");
@@ -242,19 +241,11 @@ public class PurchaseActivity extends AppCompatActivity {
 
     public void playMusicfromUrl(String status){
 
-        try {
-            mediaPlayer.setDataSource(getApplicationContext(), Uri.parse(myUri));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            mediaPlayer.prepare();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
 
         if (status.equals("start"))
         {
+
             mediaPlayer.seekTo(posmusic);
             mediaPlayer.start();
         }
@@ -266,9 +257,19 @@ public class PurchaseActivity extends AppCompatActivity {
         else if(status.equals("end"))
         {
             mediaPlayer.release();
-            mediaPlayer= null;
+            //mediaPlayer= null;
         }
         else  if (status.equals("begin")){
+            try {
+                mediaPlayer.setDataSource(getApplicationContext(), Uri.parse(myUri));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                mediaPlayer.prepare();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             mediaPlayer.start();
             mediaPlayer.setLooping(true);
         }

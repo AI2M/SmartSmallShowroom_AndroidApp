@@ -66,8 +66,8 @@ public class MainActivity extends AppCompatActivity implements Main.OnFragmentIn
         userSession     = new UserSession(this);
 
         TabLayout tabLayout = (TabLayout)findViewById(R.id.tablayout);
-        tabLayout.addTab(tabLayout.newTab().setText("Design"));
-        tabLayout.addTab(tabLayout.newTab().setText("Main"));
+        tabLayout.addTab(tabLayout.newTab().setText("Questionnaire"));
+        tabLayout.addTab(tabLayout.newTab().setText("Music Box Showroom"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = (ViewPager)findViewById(R.id.pager);

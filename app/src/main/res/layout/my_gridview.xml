@@ -7,14 +7,13 @@
     <GridView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_gravity="center"
         android:id="@+id/my_grid"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="100dp"
         android:layout_marginBottom="50dp"
         android:columnWidth="200dp"
         android:gravity="center|bottom"
-        android:horizontalSpacing="50dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
+
         android:numColumns="3"
         android:stretchMode="spacingWidth"
         android:verticalSpacing="20dp"
@@ -23,3 +22,6 @@
 
 
 </FrameLayout>
+    <!--android:horizontalSpacing="50dp"-->
+    <!--android:layout_marginLeft="50dp"-->
+    <!--android:layout_marginRight="50dp"-->

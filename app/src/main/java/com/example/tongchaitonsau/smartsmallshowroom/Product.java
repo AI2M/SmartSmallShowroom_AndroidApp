@@ -10,6 +10,7 @@ public class Product {
     private String name;
     private String price;
     private String detail;
+    private String url;
 
     public Product(int id, String name, String detail, String price){
         this.id = id;
@@ -23,6 +24,14 @@ public class Product {
 
     public void setDetail(String detail) {
         this.detail = detail;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public int getId() {

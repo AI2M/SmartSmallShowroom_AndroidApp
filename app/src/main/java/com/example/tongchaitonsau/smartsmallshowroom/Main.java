@@ -204,6 +204,7 @@ public class Main extends Fragment{
     public void setUiEnabled(boolean bool) {
         connect.setEnabled(!bool);
         disconnect.setEnabled(bool);
+        gridView.setEnabled(bool);
         //open.setEnabled(bool);
         //off.setEnabled(bool);
         //textView.setEnabled(bool);
@@ -254,6 +255,7 @@ public class Main extends Fragment{
                         {
                             PendingIntent pi = PendingIntent.getBroadcast(getActivity(), 0, new Intent(ACTION_USB_PERMISSION), 0);
                             usbManager.requestPermission(device, pi);
+                            setUiEnabled(true);
                             keep = false;
                         } else {
                             connection = null;
