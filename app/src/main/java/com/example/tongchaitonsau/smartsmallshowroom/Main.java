@@ -44,7 +44,9 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,6 +71,8 @@ public class Main extends Fragment{
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    String date_,time_,music_box_id_,showroom_id_,position_;
+
     ArrayList<String> name = new ArrayList<String>();
     ArrayList<String> price = new ArrayList<String>();
     ArrayList<String> music_box_id = new ArrayList<String>();
@@ -83,7 +87,7 @@ public class Main extends Fragment{
     private OnFragmentInteractionListener mListener;
 
     public final String ACTION_USB_PERMISSION = "com.hariharan.arduinousb.USB_PERMISSION";
-    Button connect ,disconnect,open,off;
+    Button connect ,disconnect;
     //TextView textView;
     UsbManager usbManager;
     UsbDevice device;
@@ -148,17 +152,6 @@ public class Main extends Fragment{
         ;
     };
 
-    private void tvAppend(TextView tv, CharSequence text) {
-        final TextView ftv = tv;
-        final CharSequence ftext = text;
-
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                ftv.append(ftext);
-            }
-        });
-    }
 
 
 
@@ -204,10 +197,8 @@ public class Main extends Fragment{
     public void setUiEnabled(boolean bool) {
         connect.setEnabled(!bool);
         disconnect.setEnabled(bool);
-        gridView.setEnabled(bool);
-        //open.setEnabled(bool);
-        //off.setEnabled(bool);
-        //textView.setEnabled(bool);
+        //gridView.setEnabled(bool);
+
 
     }
 
@@ -223,7 +214,6 @@ public class Main extends Fragment{
         stubGrid.inflate();
         gridView = (GridView) view.findViewById(R.id.my_grid);
 
-       // textView = (TextView) view.findViewById(R.id.res);
 
         gridView.setOnItemClickListener(onitemclick);
         stubGrid.setVisibility(View.VISIBLE);
@@ -327,13 +317,105 @@ public class Main extends Fragment{
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
+            //store transactions
+            Calendar c = Calendar.getInstance();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd");
+            SimpleDateFormat sdf2 = new SimpleDateFormat("HH:mm:ss");
+            date_ = sdf.format(c.getTime());
+            time_ = sdf2.format(c.getTime());
+            music_box_id_ = music_box_id.get(i);
+            showroom_id_  = "5";
+            position_ = position.get(i);
+            storeTransactions(date_,time_,music_box_id_,showroom_id_,position_);
+
+//            Log.d("datetime2************",date_ + " Time =="+time_
+//            +"id=="+music_box_id_+"show id =="+showroom_id_+"pos=="+position_);
+
+
+            //go to purchase
             Intent goPurchase = new Intent(getActivity(),PurchaseActivity.class);
-            goPurchase.putExtra("PASS_NAME",productList.get(i).getName());
+            //goPurchase.putExtra("PASS_NAME",productList.get(i).getName());
+            goPurchase.putExtra("PASS_NAME",name.get(i));
             goPurchase.putExtra("POSITION", Integer.toString(i+1));
-            goPurchase.putExtra("MUSIC_BOX_ID",productList.get(i).getId());
+            //goPurchase.putExtra("MUSIC_BOX_ID",productList.get(i).getId());
+            goPurchase.putExtra("MUSIC_BOX_ID",music_box_id.get(i));
             startActivity(goPurchase);
         }
     };
+
+    private void storeTransactions (final String date_data, final String time_data, final String music_box_id_data
+            , final String showroom_id_data, final String position_data){
+        // Tag used to cancel the request
+        String tag_string_req = "req_storetransaction";
+        progressDialog.setMessage("Storing up...");
+        progressDialog.show();
+
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                Utils.STORETRANSACTIONS_URL, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "addTransaction Response: " + response);
+
+                try {
+
+                    JSONObject jObj = new JSONObject(response);
+                    boolean error = jObj.getBoolean("error");
+
+                    // Check for error node in json
+                    if (!error) {
+                        JSONObject Transactions = jObj.getJSONObject("Transactions");
+                        String _date = Transactions.getString("date");
+                        String _time= Transactions.getString("time");
+
+
+                    } else {
+                        // Error in login. Get the error message
+                        String errorMsg = jObj.getString("error_msg");
+                        //Log.d("error ---------", errorMsg);
+                        toast(errorMsg);
+                        progressDialog.hide();
+                    }
+                } catch (JSONException e) {
+                    // JSON error
+                    e.printStackTrace();
+                    progressDialog.hide();
+                    toast("Send transaction Success");
+                    //Log.d("error ---------2", e.getMessage());
+                    //toast("Json error: " + e.getMessage());
+
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Login Error: " + error.getMessage());
+                toast("Unknown Error occurred");
+                progressDialog.hide();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting parameters to login url
+                Map<String, String> params = new HashMap<>();
+                params.put("date", date_data);
+                params.put("time", time_data);
+                params.put("music_box_id_data", music_box_id_data);
+                params.put("showroom_id_data", showroom_id_data);
+                params.put("position_data", position_data);
+
+                return params;
+            }
+
+        };
+
+        // Adding request to request queue
+        AndroidLoginController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
 
     private void getData(final String showroom_id){
         // Tag used to cancel the request

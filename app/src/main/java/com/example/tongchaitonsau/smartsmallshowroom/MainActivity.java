@@ -43,7 +43,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,6 +63,13 @@ public class MainActivity extends AppCompatActivity implements Main.OnFragmentIn
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd");
+        SimpleDateFormat sdf2 = new SimpleDateFormat("HH:mm:ss");
+        String strDate = sdf.format(c.getTime());
+        String strTime = sdf2.format(c.getTime());
+        Log.d("datetime2************",strDate + " Time =="+strTime);
 
         userInfo        = new UserInfo(this);
         userSession     = new UserSession(this);
