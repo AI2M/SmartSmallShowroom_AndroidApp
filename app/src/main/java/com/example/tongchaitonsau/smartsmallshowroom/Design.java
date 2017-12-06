@@ -3,6 +3,7 @@ package com.example.tongchaitonsau.smartsmallshowroom;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -58,6 +60,7 @@ public class Design extends Fragment implements View.OnClickListener {
 
     RadioButton rb_salary;
     RadioGroup rg_salary;
+    RadioGroup ageGroup,salaryGroup;
     EditText tel;
     Button submit;
 
@@ -102,7 +105,9 @@ public class Design extends Fragment implements View.OnClickListener {
         View rootView = inflater.inflate(R.layout.fragment_design, container, false);
 
         progressDialog  = new ProgressDialog(getActivity());
-        this.getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         tel =  (EditText)rootView.findViewById(R.id.tel_edt);
         tel.addTextChangedListener(new TextWatcher() {
@@ -129,14 +134,17 @@ public class Design extends Fragment implements View.OnClickListener {
 
         // Set the onClick for each of our views as the one implemented by this Fragment
         //age
-        rootView.findViewById(R.id.age_data).setOnClickListener(this);
+         ageGroup = (RadioGroup)rootView.findViewById(R.id.age_data);
+         salaryGroup = (RadioGroup)rootView.findViewById(R.id.salary_data);
+
+        //rootView.findViewById(R.id.age_data).setOnClickListener(this);
         rootView.findViewById(R.id.age15low_data).setOnClickListener(this);
         rootView.findViewById(R.id.age15to20_data).setOnClickListener(this);
         rootView.findViewById(R.id.age20to30_data).setOnClickListener(this);
         rootView.findViewById(R.id.age30to40_data).setOnClickListener(this);
         rootView.findViewById(R.id.age40up).setOnClickListener(this);
         //salary
-        rootView.findViewById(R.id.salary_data).setOnClickListener(this);
+        //rootView.findViewById(R.id.salary_data).setOnClickListener(this);
         rootView.findViewById(R.id.salary1).setOnClickListener(this);
         rootView.findViewById(R.id.salary2).setOnClickListener(this);
         rootView.findViewById(R.id.salary3).setOnClickListener(this);
@@ -230,11 +238,16 @@ public class Design extends Fragment implements View.OnClickListener {
                     phone_num_ = tel.getText().toString();
                     storeCustomer(sex_,job_,age_,phone_num_,salary_,"5");
                     tel.setText("");
+                    ageGroup.clearCheck();
+                    salaryGroup.clearCheck();
+
+
                 }
 
 
         }
     }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -409,13 +422,6 @@ public class Design extends Fragment implements View.OnClickListener {
         Toast.makeText(getActivity(), x, Toast.LENGTH_SHORT).show();
     }
 
-    //hide keyboard
-
-
-    public void hideKeyboard(View view){
-        InputMethodManager inputMethodManager =(InputMethodManager)this.getActivity().getSystemService(Questionnaire.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
 
 
 

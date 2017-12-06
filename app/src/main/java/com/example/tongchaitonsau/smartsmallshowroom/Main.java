@@ -197,7 +197,7 @@ public class Main extends Fragment{
     public void setUiEnabled(boolean bool) {
         connect.setEnabled(!bool);
         disconnect.setEnabled(bool);
-        //gridView.setEnabled(bool);
+        gridView.setEnabled(bool);
 
 
     }
