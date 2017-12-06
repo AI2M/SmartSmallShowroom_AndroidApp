@@ -328,8 +328,8 @@ public class Main extends Fragment{
             position_ = position.get(i);
             storeTransactions(date_,time_,music_box_id_,showroom_id_,position_);
 
-//            Log.d("datetime2************",date_ + " Time =="+time_
-//            +"id=="+music_box_id_+"show id =="+showroom_id_+"pos=="+position_);
+            Log.d("datetime2************",date_ + " Time =="+time_
+            +"id=="+music_box_id_+"show id =="+showroom_id_+"pos=="+position_);
 
 
             //go to purchase
@@ -367,12 +367,14 @@ public class Main extends Fragment{
                         JSONObject Transactions = jObj.getJSONObject("Transactions");
                         String _date = Transactions.getString("date");
                         String _time= Transactions.getString("time");
+                        String _showroom_id = Transactions.getString("showroom_id");
+                        String _music_box_id= Transactions.getString("music_box_id");
 
 
                     } else {
                         // Error in login. Get the error message
                         String errorMsg = jObj.getString("error_msg");
-                        //Log.d("error ---------", errorMsg);
+                        Log.d("error --------- in ", errorMsg);
                         toast(errorMsg);
                         progressDialog.hide();
                     }
@@ -381,7 +383,7 @@ public class Main extends Fragment{
                     e.printStackTrace();
                     progressDialog.hide();
                     toast("Send transaction Success");
-                    //Log.d("error ---------2", e.getMessage());
+                    Log.d("error ---------2", e.getMessage());
                     //toast("Json error: " + e.getMessage());
 
                 }
@@ -404,12 +406,19 @@ public class Main extends Fragment{
                 Map<String, String> params = new HashMap<>();
                 params.put("date", date_data);
                 params.put("time", time_data);
-                params.put("music_box_id_data", music_box_id_data);
-                params.put("showroom_id_data", showroom_id_data);
-                params.put("position_data", position_data);
+                params.put("music_box_id", music_box_id_data);
+                params.put("showroom_id", showroom_id_data);
+                params.put("position", position_data);
 
                 return params;
             }
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("Content-Type","application/x-www-form-urlencoded");
+                return params;
+            }
+
 
         };
 

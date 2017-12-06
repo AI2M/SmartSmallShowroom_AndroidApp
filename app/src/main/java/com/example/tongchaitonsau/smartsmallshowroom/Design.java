@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,7 +61,7 @@ public class Design extends Fragment implements View.OnClickListener {
     EditText tel;
     Button submit;
 
-    private String sex_,job_,age_,phone_num_,salary_;
+    private String sex_,job_,age_="",phone_num_,salary_="";
     private ProgressDialog progressDialog;
 
     public Design() {
@@ -103,6 +105,23 @@ public class Design extends Fragment implements View.OnClickListener {
         this.getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         tel =  (EditText)rootView.findViewById(R.id.tel_edt);
+        tel.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // This can be ignored
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // This can be ignored
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                validateEditText(); // OR validation can be specific (only for this EditText)
+                validatePhone();
+            }
+        });
         //submit = (Button)rootView.findViewById(R.id.submit_question);
 
         Sex(rootView);
@@ -128,6 +147,25 @@ public class Design extends Fragment implements View.OnClickListener {
 
 
         return rootView;
+    }
+
+    private boolean validateEditText() {
+        boolean isValidated = true;
+        if (tel.getText().toString().length() == 0) {
+            tel.setError("Required");
+            isValidated = false;
+        }
+        return isValidated;
+    }
+    private boolean validatePhone() {
+
+        boolean phoneIsValidated = true;
+        String text = tel.getText().toString();
+        if (!text.matches("^(?:0091|\\\\+91|0)[7-9][0-9]{7,8}$")) {
+            phoneIsValidated = false;
+            tel.setError("Invalid format");
+        }
+        return phoneIsValidated;
     }
     @Override
     public void onClick(View view) {
@@ -181,12 +219,17 @@ public class Design extends Fragment implements View.OnClickListener {
             //button
 
             case R.id.submit_question:
-                if(tel.getText().toString().isEmpty()){
-                    toast("please enter phone number");
+
+                if(!validatePhone()&&!validateEditText()){
+                    toast("wrong phone number");
+                }
+                else  if(salary_.toString().isEmpty()||age_.toString().isEmpty()){
+                    toast("please enter all questions");
                 }
                 else {
                     phone_num_ = tel.getText().toString();
-                    storeCustomer(sex_,job_,age_,phone_num_,salary_);
+                    storeCustomer(sex_,job_,age_,phone_num_,salary_,"5");
+                    tel.setText("");
                 }
 
 
@@ -283,7 +326,7 @@ public class Design extends Fragment implements View.OnClickListener {
     //store data into database
 
     private void storeCustomer (final String sex, final String job, final String age
-            , final String phone_num, final String salary){
+            , final String phone_num, final String salary ,final String showroom_id){
         // Tag used to cancel the request
         String tag_string_req = "req_storecustomer";
         progressDialog.setMessage("Storing up...");
@@ -309,6 +352,7 @@ public class Design extends Fragment implements View.OnClickListener {
                         String age = Customer.getString("age");
                         String phone_num = Customer.getString("phone_num");
                         String  salary = Customer.getString("salary");
+                        String  showroom_id = Customer.getString("showroom_id");
 
 
                     } else {
@@ -349,6 +393,7 @@ public class Design extends Fragment implements View.OnClickListener {
                 params.put("age", String.valueOf(age));
                 params.put("phone_num", phone_num);
                 params.put("salary", String.valueOf(salary));
+                params.put("showroom_id", showroom_id);
 
                 return params;
             }
