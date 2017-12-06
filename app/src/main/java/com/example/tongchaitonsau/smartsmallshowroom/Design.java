@@ -241,6 +241,7 @@ public class Design extends Fragment implements View.OnClickListener {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+
     }
 
 
