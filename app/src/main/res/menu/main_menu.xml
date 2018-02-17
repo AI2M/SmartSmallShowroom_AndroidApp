@@ -15,4 +15,18 @@
         android:icon="@drawable/ic_action_back"
         />
 
+    <item
+        android:id="@+id/action_connect"
+        app:showAsAction="never"
+        android:title="Connect"
+        android:icon="@drawable/ic_action_back"
+        />
+
+    <item
+        android:id="@+id/action_disconnect"
+        app:showAsAction="never"
+        android:title="Disconnect"
+        android:icon="@drawable/ic_action_back"
+        />
+
 </menu>

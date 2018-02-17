@@ -78,7 +78,6 @@ public class Main extends Fragment{
     ArrayList<String> music_box_id = new ArrayList<String>();
     ArrayList<String> detail = new ArrayList<String>();
     ArrayList<String> position = new ArrayList<String>();
-    Array a[] ;
 
     // TODO: Rename and change types of parameters
     private String mParam1;

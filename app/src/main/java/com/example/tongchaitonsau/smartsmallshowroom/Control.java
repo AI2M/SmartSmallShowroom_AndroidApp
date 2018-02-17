@@ -1,12 +1,33 @@
 package com.example.tongchaitonsau.smartsmallshowroom;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -17,7 +38,7 @@ import android.view.ViewGroup;
  * Use the {@link Control#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Control extends Fragment {
+public class Control extends Fragment implements View.OnClickListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -27,7 +48,22 @@ public class Control extends Fragment {
     private String mParam1;
     private String mParam2;
 
+
     private OnFragmentInteractionListener mListener;
+
+    //start var
+    private static final String TAG = Main.class.getSimpleName();
+    private ProgressDialog progressDialog;
+
+    ArrayList<String> music_box_id = new ArrayList<String>();
+    ArrayList<String> name = new ArrayList<String>();
+    ArrayList<String> mSelected = new ArrayList<String>();
+    ArrayList<String> lSelected = new ArrayList<String>();
+
+    CheckBox m1,m2,m3,m4,m5,m6,m7,m8,m9,l1,l2,l3,l4,l5,l6,l7,l8,l9;
+    String musicSelected;
+
+    //end var
 
     public Control() {
         // Required empty public constructor
@@ -64,7 +100,317 @@ public class Control extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_control, container, false);
+        View view =  inflater.inflate(R.layout.fragment_control, container, false);
+        progressDialog  = new ProgressDialog(getActivity());
+        //checkbox
+        view.findViewById(R.id.m1).setOnClickListener(this);
+        view.findViewById(R.id.m2).setOnClickListener(this);
+        view.findViewById(R.id.m3).setOnClickListener(this);
+        view.findViewById(R.id.m4).setOnClickListener(this);
+        view.findViewById(R.id.m5).setOnClickListener(this);
+        view.findViewById(R.id.m6).setOnClickListener(this);
+        view.findViewById(R.id.m7).setOnClickListener(this);
+        view.findViewById(R.id.m8).setOnClickListener(this);
+        view.findViewById(R.id.m9).setOnClickListener(this);
+        view.findViewById(R.id.l1).setOnClickListener(this);
+        view.findViewById(R.id.l2).setOnClickListener(this);
+        view.findViewById(R.id.l3).setOnClickListener(this);
+        view.findViewById(R.id.l4).setOnClickListener(this);
+        view.findViewById(R.id.l5).setOnClickListener(this);
+        view.findViewById(R.id.l6).setOnClickListener(this);
+        view.findViewById(R.id.l7).setOnClickListener(this);
+        view.findViewById(R.id.l8).setOnClickListener(this);
+        view.findViewById(R.id.l9).setOnClickListener(this);
+        //button
+
+        Button ControlSend = (Button)view.findViewById(R.id.btn_control);
+        ControlSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("mSelected=", String.valueOf(mSelected));
+                Log.d("lSelected=", String.valueOf(lSelected));
+                Log.d("musicSelected=",musicSelected);
+            }
+        });
+
+
+        getData(view,"1");
+
+        return  view;
+    }
+    @Override
+    public void onClick(View view) {
+        boolean checked = ((CheckBox) view).isChecked();
+        switch (view.getId()){
+            case R.id.m1:
+                if(checked){
+                    mSelected.add("m1");
+                }
+                else {
+                    mSelected.remove("m1");
+                }
+                break;
+            case R.id.m2:
+                if(checked){
+                    mSelected.add("m2");
+                }
+                else {
+                    mSelected.remove("m2");
+                }
+                break;
+
+            case R.id.m3:
+                if(checked){
+                    mSelected.add("m3");
+                }
+                else {
+                    mSelected.remove("m3");
+                }
+                break;
+
+            case R.id.m4:
+                if(checked){
+                    mSelected.add("m4");
+                }
+                else {
+                    mSelected.remove("m4");
+                }
+                break;
+
+            case R.id.m5:
+                if(checked){
+                    mSelected.add("m5");
+                }
+                else {
+                    mSelected.remove("m5");
+                }
+                break;
+
+            case R.id.m6:
+                if(checked){
+                    mSelected.add("m6");
+                }
+                else {
+                    mSelected.remove("m6");
+                }
+                break;
+
+            case R.id.m7:
+                if(checked){
+                    mSelected.add("m7");
+                }
+                else {
+                    mSelected.remove("m7");
+                }
+                break;
+
+            case R.id.m8:
+                if(checked){
+                    mSelected.add("m8");
+                }
+                else {
+                    mSelected.remove("m8");
+                }
+                break;
+
+            case R.id.m9:
+                if(checked){
+                    mSelected.add("m9");
+                }
+                else {
+                    mSelected.remove("m9");
+                }
+                break;
+            case R.id.l1:
+                if(checked){
+                    lSelected.add("l1");
+                }
+                else {
+                    lSelected.remove("l1");
+                }
+                break;
+            case R.id.l2:
+                if(checked){
+                    lSelected.add("l2");
+                }
+                else {
+                    lSelected.remove("l2");
+                }
+                break;
+            case R.id.l3:
+                if(checked){
+                    lSelected.add("l3");
+                }
+                else {
+                    lSelected.remove("l3");
+                }
+                break;
+            case R.id.l4:
+                if(checked){
+                    lSelected.add("l4");
+                }
+                else {
+                    lSelected.remove("l5");
+                }
+                break;
+            case R.id.l5:
+                if(checked){
+                    lSelected.add("l5");
+                }
+                else {
+                    lSelected.remove("l5");
+                }
+                break;
+            case R.id.l6:
+                if(checked){
+                    lSelected.add("l6");
+                }
+                else {
+                    lSelected.remove("l6");
+                }
+                break;
+            case R.id.l7:
+                if(checked){
+                    lSelected.add("l7");
+                }
+                else {
+                    lSelected.remove("l7");
+                }
+                break;
+            case R.id.l8:
+                if(checked){
+                    lSelected.add("l8");
+                }
+                else {
+                    lSelected.remove("l8");
+                }
+                break;
+            case R.id.l9:
+                if(checked){
+                    lSelected.add("l9");
+                }
+                else {
+                    lSelected.remove("l9");
+                }
+                break;
+
+
+        }
+
+    }
+
+    private  void MusicSpinner(View view,ArrayList name){
+        // start spinner
+        Spinner music_spinner = (Spinner) view.findViewById(R.id.music_spin);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_dropdown_item);
+        for (int i = 0; i < name.size(); i++) // Maximum size of i upto --> Your Array Size
+        {
+            dataAdapter.add((String) name.get(i));
+        }
+        music_spinner.setAdapter(dataAdapter);
+
+        music_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                musicSelected = music_box_id.get(i).toString();
+               // Log.d("musicid = ",selected_music);
+               // toast(selected_music);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        //end spinner
+    }
+
+    private void getData(final View view, final String showroom_id){
+        // Tag used to cancel the request
+        String tag_string_req = "req_getdata";
+        progressDialog.setMessage("getting data...");
+        progressDialog.show();
+
+
+        StringRequest strReq = new StringRequest(Request.Method.GET,
+                Utils.GETDATA_URL+"/?showroom_id="+showroom_id, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "get data Response: " + response.toString());
+
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    boolean error = jObj.getBoolean("error");
+
+                    // Check for error node in json
+                    if (!error) {
+                        // Now store the user in SQLite
+                        JSONArray music_boxs = jObj.getJSONArray("m_and_s");
+//                        ArrayList<String> name = new ArrayList<String>();
+//                        ArrayList<String> price = new ArrayList<String>();
+//                        ArrayList<String> music_box_id = new ArrayList<String>();
+//                        ArrayList<String> detail = new ArrayList<String>();
+//                        ArrayList<String> position = new ArrayList<String>();
+
+                        for (int i =0; i < music_boxs.length();i++){
+                            JSONObject music = music_boxs.getJSONObject(i);
+
+                            name.add(music.getString("name"));
+//                            price.add(music.getString("price"));
+                            music_box_id.add(music.getString("music_box_id"));
+//                            detail.add(music.getString("detail"));
+//                            position.add(music.getString("position"));
+
+
+                        }
+
+                        Log.d(TAG, "Data === " + name);
+                        MusicSpinner(view,name); //add music_name to spinner
+                      //  toast("Get Data Success");
+
+                        progressDialog.hide();
+                    } else {
+                        // Error in login. Get the error message
+                        String errorMsg = jObj.getString("error_msg");
+                        toast(errorMsg);
+                        progressDialog.hide();
+
+                    }
+                } catch (JSONException e) {
+                    // JSON error
+                    e.printStackTrace();
+                  //  toast("Json error: " + e.getMessage());
+                    progressDialog.hide();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Login Error: " + error.getMessage());
+               // toast("Unknown Error occurred");
+                progressDialog.hide();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Log.d(TAG, "now here");
+                // Posting parameters to login url
+                Map<String, String> params = new HashMap<>();
+                params.put("showroom_id", showroom_id);
+
+
+                return params;
+            }
+
+        };
+        // Adding request to request queue
+        AndroidLoginController.getInstance().addToRequestQueue(strReq, tag_string_req);
+
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -104,5 +450,8 @@ public class Control extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+    private void toast(String x){
+        Toast.makeText(getActivity(), x, Toast.LENGTH_SHORT).show();
     }
 }

@@ -5,7 +5,7 @@ package com.example.tongchaitonsau.smartsmallshowroom;
  */
 
 public class Utils {
-    public static final String BASE_IP          = "http://192.168.1.15/";
+    public static final String BASE_IP          = "http://192.168.1.3/";
     public static final String LOGIN_URL        = BASE_IP + "php/login.php";
     public static final String REGISTER_URL     = BASE_IP + "php/register.php";
     public static final String GETDATA_URL     = BASE_IP + "SSS_web_api/getMandSData.php";
