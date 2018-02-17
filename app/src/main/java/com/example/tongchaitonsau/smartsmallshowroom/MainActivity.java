@@ -55,7 +55,7 @@ import java.util.Map;
 import prefs.UserInfo;
 import prefs.UserSession;
 
-public class MainActivity extends AppCompatActivity implements Main.OnFragmentInteractionListener, Design.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements Main.OnFragmentInteractionListener, Design.OnFragmentInteractionListener, Control.OnFragmentInteractionListener {
 
     private UserInfo userInfo;
     private UserSession userSession;
@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements Main.OnFragmentIn
         TabLayout tabLayout = (TabLayout)findViewById(R.id.tablayout);
         tabLayout.addTab(tabLayout.newTab().setText("Questionnaire"));
         tabLayout.addTab(tabLayout.newTab().setText("Music Box Showroom"));
+        tabLayout.addTab(tabLayout.newTab().setText("Control"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = (ViewPager)findViewById(R.id.pager);

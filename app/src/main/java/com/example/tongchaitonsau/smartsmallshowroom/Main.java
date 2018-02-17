@@ -208,7 +208,7 @@ public class Main extends Fragment{
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_main,container,false);
         progressDialog  = new ProgressDialog(getActivity());
-        getData("5");
+        getData("1");
 
         stubGrid = (ViewStub) view.findViewById (R.id.stub_grid);
         stubGrid.inflate();
@@ -426,7 +426,7 @@ public class Main extends Fragment{
         AndroidLoginController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
-    private void getData(final String showroom_id){
+    private void getData( final String showroom_id){
         // Tag used to cancel the request
         String tag_string_req = "req_getdata";
         progressDialog.setMessage("getting data...");
@@ -434,7 +434,7 @@ public class Main extends Fragment{
 
 
         StringRequest strReq = new StringRequest(Request.Method.GET,
-                Utils.GETDATA_URL, new Response.Listener<String>() {
+                Utils.GETDATA_URL+"/?showroom_id="+showroom_id, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -447,7 +447,7 @@ public class Main extends Fragment{
                     // Check for error node in json
                     if (!error) {
                         // Now store the user in SQLite
-                        JSONArray music_boxs = jObj.getJSONArray("music_box");
+                        JSONArray music_boxs = jObj.getJSONArray("m_and_s");
 //                        ArrayList<String> name = new ArrayList<String>();
 //                        ArrayList<String> price = new ArrayList<String>();
 //                        ArrayList<String> music_box_id = new ArrayList<String>();

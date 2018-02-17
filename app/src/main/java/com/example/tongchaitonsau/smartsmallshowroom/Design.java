@@ -236,7 +236,7 @@ public class Design extends Fragment implements View.OnClickListener {
                 }
                 else {
                     phone_num_ = tel.getText().toString();
-                    storeCustomer(sex_,job_,age_,phone_num_,salary_,"5");
+                    storeCustomer(sex_,job_,age_,phone_num_,salary_,"1");
                     tel.setText("");
                     ageGroup.clearCheck();
                     salaryGroup.clearCheck();
@@ -360,7 +360,7 @@ public class Design extends Fragment implements View.OnClickListener {
 
                     // Check for error node in json
                     if (!error) {
-                        JSONObject Customer = jObj.getJSONObject("Customer");
+                        JSONObject Customer = jObj.getJSONObject("Customers");
                         String sex = Customer.getString("sex");
                         String job = Customer.getString("job");
                         String age = Customer.getString("age");
@@ -393,7 +393,7 @@ public class Design extends Fragment implements View.OnClickListener {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "Login Error: " + error.getMessage());
-                toast("Unknown Error occurred");
+                toast("Unknown Error occurredsssss");
                 progressDialog.hide();
             }
         }) {
@@ -404,9 +404,9 @@ public class Design extends Fragment implements View.OnClickListener {
                 Map<String, String> params = new HashMap<>();
                 params.put("sex", sex);
                 params.put("job", job);
-                params.put("age", String.valueOf(age));
+                params.put("age", age);
                 params.put("phone_num", phone_num);
-                params.put("salary", String.valueOf(salary));
+                params.put("salary", salary);
                 params.put("showroom_id", showroom_id);
 
                 return params;
