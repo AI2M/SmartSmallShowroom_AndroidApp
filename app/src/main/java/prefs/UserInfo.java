@@ -12,8 +12,7 @@ import java.lang.reflect.Array;
 public class UserInfo {
     private static final String TAG = UserSession.class.getSimpleName();
     private static final String PREF_NAME = "userinfo";
-    private static final String KEY_USERNAME = "username";
-    private static final String KEY_EMAIL = "email";
+    private static final String KEY_ID = "id";
     private static final String KEY_PASSWORD = "password";
 
 
@@ -29,17 +28,13 @@ public class UserInfo {
         editor = prefs.edit();
     }
 
-    public void setUsername(String username){
-        editor.putString(KEY_USERNAME, username);
-        editor.apply();
-    }
     public void setPassword(String password){
         editor.putString(KEY_PASSWORD, password);
         editor.apply();
     }
 
-    public void setEmail(String email){
-        editor.putString(KEY_EMAIL, email);
+    public void setId(String id){
+        editor.putString(KEY_ID, id);
         editor.apply();
     }
 
@@ -48,8 +43,8 @@ public class UserInfo {
         editor.commit();
     }
 
-    public String getKeyUsername(){return prefs.getString(KEY_USERNAME, "");}
 
-    public String getKeyEmail(){return prefs.getString(KEY_EMAIL, "");}
+
+    public String getKeyId(){return prefs.getString(KEY_ID, "");}
     public String getKeyPassword(){return prefs.getString(KEY_PASSWORD, "");}
 }

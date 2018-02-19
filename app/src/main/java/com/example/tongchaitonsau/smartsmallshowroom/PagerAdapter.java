@@ -21,14 +21,14 @@ public class PagerAdapter extends FragmentStatePagerAdapter{
         switch (position)
         {
             case 0:
-                Design design = new Design();
-                return  design;
-            case 1:
                 Main main = new Main();
                 return main;
-            case 2:
+            case 1:
                 Control control = new Control();
                 return control;
+            case 2:
+                Design design = new Design();
+                return  design;
             default:
                 return null;
         }

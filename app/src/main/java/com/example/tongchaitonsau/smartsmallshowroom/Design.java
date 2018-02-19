@@ -57,12 +57,11 @@ public class Design extends Fragment implements View.OnClickListener {
 
     private OnFragmentInteractionListener mListener;
     private String TAG = Design.class.getSimpleName();
+    MainActivity mainactivity;
 
-    RadioButton rb_salary;
-    RadioGroup rg_salary;
     RadioGroup ageGroup,salaryGroup;
     EditText tel;
-    Button submit;
+
 
     private String sex_,job_,age_="",phone_num_,salary_="";
     private ProgressDialog progressDialog;
@@ -105,7 +104,7 @@ public class Design extends Fragment implements View.OnClickListener {
         View rootView = inflater.inflate(R.layout.fragment_design, container, false);
 
         progressDialog  = new ProgressDialog(getActivity());
-
+        mainactivity = (MainActivity) getActivity();
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
@@ -236,7 +235,7 @@ public class Design extends Fragment implements View.OnClickListener {
                 }
                 else {
                     phone_num_ = tel.getText().toString();
-                    storeCustomer(sex_,job_,age_,phone_num_,salary_,"1");
+                    storeCustomer(sex_,job_,age_,phone_num_,salary_,mainactivity.getShowroom_id());
                     tel.setText("");
                     ageGroup.clearCheck();
                     salaryGroup.clearCheck();
@@ -343,7 +342,7 @@ public class Design extends Fragment implements View.OnClickListener {
             , final String phone_num, final String salary ,final String showroom_id){
         // Tag used to cancel the request
         String tag_string_req = "req_storecustomer";
-        progressDialog.setMessage("Storing up...");
+        progressDialog.setMessage("sending customer...");
         progressDialog.show();
 
         StringRequest strReq = new StringRequest(Request.Method.POST,

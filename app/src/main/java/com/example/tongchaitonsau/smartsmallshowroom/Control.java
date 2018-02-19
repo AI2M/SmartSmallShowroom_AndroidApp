@@ -1,7 +1,14 @@
 package com.example.tongchaitonsau.smartsmallshowroom;
 
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.hardware.usb.UsbDevice;
+import android.hardware.usb.UsbDeviceConnection;
+import android.hardware.usb.UsbManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,11 +27,14 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.felhr.usbserial.UsbSerialDevice;
+import com.felhr.usbserial.UsbSerialInterface;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,6 +60,7 @@ public class Control extends Fragment implements View.OnClickListener{
 
 
     private OnFragmentInteractionListener mListener;
+    MainActivity mainactivity;
 
     //start var
     private static final String TAG = Main.class.getSimpleName();
@@ -62,6 +73,13 @@ public class Control extends Fragment implements View.OnClickListener{
 
     CheckBox m1,m2,m3,m4,m5,m6,m7,m8,m9,l1,l2,l3,l4,l5,l6,l7,l8,l9;
     String musicSelected;
+
+    //usb
+    public final String ACTION_USB_PERMISSION = "com.hariharan.arduinousb.USB_PERMISSION";
+    UsbManager usbManager;
+    UsbDevice device;
+    UsbSerialDevice serialPort;
+    UsbDeviceConnection connection;
 
     //end var
 
@@ -102,6 +120,35 @@ public class Control extends Fragment implements View.OnClickListener{
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_control, container, false);
         progressDialog  = new ProgressDialog(getActivity());
+        mainactivity = (MainActivity) getActivity();
+        //usb
+        usbManager = (UsbManager) getActivity().getSystemService(getActivity().USB_SERVICE);
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ACTION_USB_PERMISSION);
+        filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
+        filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
+        getActivity().registerReceiver(broadcastReceiver, filter);
+
+        HashMap<String, UsbDevice> usbDevices = usbManager.getDeviceList();
+        if (!usbDevices.isEmpty()) {
+            boolean keep = true;
+            for (Map.Entry<String, UsbDevice> entry : usbDevices.entrySet()) {
+                device = entry.getValue();
+                int deviceVID = device.getVendorId();
+                if (deviceVID == 0x2A03)//Arduino Vendor ID
+                {
+                    PendingIntent pi = PendingIntent.getBroadcast(getActivity(), 0, new Intent(ACTION_USB_PERMISSION), 0);
+                    usbManager.requestPermission(device, pi);
+                    keep = false;
+                } else {
+                    connection = null;
+                    device = null;
+                }
+
+                if (!keep)
+                    break;
+            }
+        }
         //checkbox
         view.findViewById(R.id.m1).setOnClickListener(this);
         view.findViewById(R.id.m2).setOnClickListener(this);
@@ -130,11 +177,13 @@ public class Control extends Fragment implements View.OnClickListener{
                 Log.d("mSelected=", String.valueOf(mSelected));
                 Log.d("lSelected=", String.valueOf(lSelected));
                 Log.d("musicSelected=",musicSelected);
+                String control = "mSelected = "+String.valueOf(mSelected)+ "lSelected = "+ String.valueOf(lSelected)
+                        +"musicSelected = "+musicSelected;
+                serialPort.write(control.getBytes());
             }
         });
 
-
-        getData(view,"1");
+        getData(view,mainactivity.getShowroom_id());
 
         return  view;
     }
@@ -328,8 +377,8 @@ public class Control extends Fragment implements View.OnClickListener{
     private void getData(final View view, final String showroom_id){
         // Tag used to cancel the request
         String tag_string_req = "req_getdata";
-        progressDialog.setMessage("getting data...");
-        progressDialog.show();
+//        progressDialog.setMessage("getting data...");
+//        progressDialog.show();
 
 
         StringRequest strReq = new StringRequest(Request.Method.GET,
@@ -347,20 +396,12 @@ public class Control extends Fragment implements View.OnClickListener{
                     if (!error) {
                         // Now store the user in SQLite
                         JSONArray music_boxs = jObj.getJSONArray("m_and_s");
-//                        ArrayList<String> name = new ArrayList<String>();
-//                        ArrayList<String> price = new ArrayList<String>();
-//                        ArrayList<String> music_box_id = new ArrayList<String>();
-//                        ArrayList<String> detail = new ArrayList<String>();
-//                        ArrayList<String> position = new ArrayList<String>();
 
                         for (int i =0; i < music_boxs.length();i++){
                             JSONObject music = music_boxs.getJSONObject(i);
 
                             name.add(music.getString("name"));
-//                            price.add(music.getString("price"));
                             music_box_id.add(music.getString("music_box_id"));
-//                            detail.add(music.getString("detail"));
-//                            position.add(music.getString("position"));
 
 
                         }
@@ -451,6 +492,62 @@ public class Control extends Fragment implements View.OnClickListener{
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    UsbSerialInterface.UsbReadCallback mCallback = new UsbSerialInterface.UsbReadCallback() { //Defining a Callback which triggers whenever data is read.
+        @Override
+        public void onReceivedData(byte[] arg0) {
+            String data = null;
+            try {
+                data = new String(arg0, "UTF-8");
+                data.concat("/n");
+                //tvAppend(textView, data);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+    };
+    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() { //Broadcast Receiver to automatically start and stop the Serial connection.
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(ACTION_USB_PERMISSION)) {
+                boolean granted = intent.getExtras().getBoolean(UsbManager.EXTRA_PERMISSION_GRANTED);
+                if (granted) {
+                    connection = usbManager.openDevice(device);
+                    serialPort = UsbSerialDevice.createUsbSerialDevice(device, connection);
+                    if (serialPort != null) {
+                        if (serialPort.open()) { //Set Serial Connection Parameters.
+                            serialPort.setBaudRate(9600);
+                            serialPort.setDataBits(UsbSerialInterface.DATA_BITS_8);
+                            serialPort.setStopBits(UsbSerialInterface.STOP_BITS_1);
+                            serialPort.setParity(UsbSerialInterface.PARITY_NONE);
+                            serialPort.setFlowControl(UsbSerialInterface.FLOW_CONTROL_OFF);
+                            serialPort.read(mCallback);
+//                            String string = "ok_send".toString(); //send data
+//                            serialPort.write(string.getBytes());
+
+                        } else {
+                            Log.d("SERIAL", "PORT NOT OPEN");
+                        }
+                    } else {
+                        Log.d("SERIAL", "PORT IS NULL");
+                    }
+                } else {
+                    Log.d("SERIAL", "PERM NOT GRANTED");
+                }
+            }
+            else if (intent.getAction().equals(UsbManager.ACTION_USB_DEVICE_ATTACHED)) {
+                //onClickCon(con);
+            }
+            else if (intent.getAction().equals(UsbManager.ACTION_USB_DEVICE_DETACHED)) {
+                //onClickDiscon(discon);
+
+            }
+        }
+
+        ;
+    };
     private void toast(String x){
         Toast.makeText(getActivity(), x, Toast.LENGTH_SHORT).show();
     }

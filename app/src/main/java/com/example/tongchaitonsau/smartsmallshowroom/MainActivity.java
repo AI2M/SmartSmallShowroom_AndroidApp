@@ -1,5 +1,6 @@
 package com.example.tongchaitonsau.smartsmallshowroom;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
@@ -71,6 +72,15 @@ public class MainActivity extends AppCompatActivity implements Main.OnFragmentIn
     public final String ACTION_USB_PERMISSION = "com.hariharan.arduinousb.USB_PERMISSION";
     Menu mymenu;
 
+    private boolean statusSerial = false;
+
+    public boolean getStatusSerial() {
+        return statusSerial;
+    }
+
+    public String getShowroom_id(){
+        return userInfo.getKeyId();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,15 +92,15 @@ public class MainActivity extends AppCompatActivity implements Main.OnFragmentIn
         SimpleDateFormat sdf2 = new SimpleDateFormat("HH:mm:ss");
         String strDate = sdf.format(c.getTime());
         String strTime = sdf2.format(c.getTime());
-        Log.d("datetime2************",strDate + " Time =="+strTime);
+       // Log.d("datetime2************",strDate + " Time =="+strTime);
 
         userInfo        = new UserInfo(this);
         userSession     = new UserSession(this);
 
         TabLayout tabLayout = (TabLayout)findViewById(R.id.tablayout);
-        tabLayout.addTab(tabLayout.newTab().setText("Questionnaire"));
         tabLayout.addTab(tabLayout.newTab().setText("Music Box Showroom"));
         tabLayout.addTab(tabLayout.newTab().setText("Control Showroom"));
+        tabLayout.addTab(tabLayout.newTab().setText("Questionnaire"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = (ViewPager)findViewById(R.id.pager);
@@ -195,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements Main.OnFragmentIn
         inflater.inflate(R.menu.main_menu,menu);
 
         mymenu = menu;
-        setUiEnabled(true);
+        setUiEnabled(false);
 
         return super.onCreateOptionsMenu(menu);
         //return  true;
@@ -221,39 +231,39 @@ public class MainActivity extends AppCompatActivity implements Main.OnFragmentIn
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.action_update:
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
-                View mView = getLayoutInflater().inflate(R.layout.dialog_update,null);
-                final EditText mPassword = (EditText) mView.findViewById(R.id.password_updated);
-                Button mLogin = (Button) mView.findViewById(R.id.button_updated);
-                mBuilder.setView(mView);
-                final AlertDialog dialog = mBuilder.create();
-                dialog.show();
-                final String password = userInfo.getKeyPassword();
-
-                mLogin.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if(mPassword.getText().toString().equals(password)){
-                            Toast.makeText(getApplicationContext(),"Update",Toast.LENGTH_SHORT).show();
-                            dialog.cancel();
-                        }
-                        else
-                        {
-                            Toast.makeText(getApplicationContext(),"Wrong password",Toast.LENGTH_SHORT).show();
-                            mPassword.setText("");
-                        }
-                    }
-                });
-                return true;
-            case R.id.action_logout:
-                //Toast.makeText(getApplicationContext(),"Logout",Toast.LENGTH_SHORT).show();
-//                userSession.setLoggedin(false);
-//                userInfo.clearUserInfo();
-//                Intent logout = new Intent(MainActivity.this,LoginActivity.class);
-//                startActivity(logout);
-//                finish();
+//            case R.id.action_update:
+//                AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
+//                View mView = getLayoutInflater().inflate(R.layout.dialog_update,null);
+//                final EditText mPassword = (EditText) mView.findViewById(R.id.password_updated);
+//                Button mLogin = (Button) mView.findViewById(R.id.button_updated);
+//                mBuilder.setView(mView);
+//                final AlertDialog dialog = mBuilder.create();
+//                dialog.show();
+//                final String password = userInfo.getKeyPassword();
+//
+//                mLogin.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        if(mPassword.getText().toString().equals(password)){
+//                            Toast.makeText(getApplicationContext(),"Update",Toast.LENGTH_SHORT).show();
+//                            dialog.cancel();
+//                        }
+//                        else
+//                        {
+//                            Toast.makeText(getApplicationContext(),"Wrong password",Toast.LENGTH_SHORT).show();
+//                            mPassword.setText("");
+//                        }
+//                    }
+//                });
 //                return true;
+            case R.id.action_logout:
+                Toast.makeText(getApplicationContext(),"Logout",Toast.LENGTH_SHORT).show();
+                userSession.setLoggedin(false);
+                userInfo.clearUserInfo();
+                Intent logout = new Intent(MainActivity.this,LoginActivity.class);
+                startActivity(logout);
+                finish();
+                return true;
             case R.id.action_connect:
                 HashMap<String, UsbDevice> usbDevices = usbManager.getDeviceList();
                 if (!usbDevices.isEmpty()) {
@@ -266,7 +276,7 @@ public class MainActivity extends AppCompatActivity implements Main.OnFragmentIn
                             PendingIntent pi = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_USB_PERMISSION), 0);
                             usbManager.requestPermission(device, pi);
 
-                            setUiEnabled(false);
+                            setUiEnabled(true);
                             keep = false;
                         } else {
                             connection = null;
@@ -279,7 +289,7 @@ public class MainActivity extends AppCompatActivity implements Main.OnFragmentIn
                 }
                 return true;
             case R.id.action_disconnect:
-                setUiEnabled(true);
+                setUiEnabled(false);
 
                 serialPort.close();
                 //tvAppend(textView,"\nSerial Connection Closed! \n");
@@ -293,11 +303,9 @@ public class MainActivity extends AppCompatActivity implements Main.OnFragmentIn
     }
 
     public void setUiEnabled(boolean bool) {
-        mymenu.findItem(R.id.action_disconnect).setEnabled(!bool);
-        mymenu.findItem(R.id.action_connect).setEnabled(bool);
-
-
-
+        mymenu.findItem(R.id.action_disconnect).setEnabled(bool);
+        mymenu.findItem(R.id.action_connect).setEnabled(!bool);
+        statusSerial=bool;
     }
     private void toast(String x){
         Toast.makeText(this, x, Toast.LENGTH_SHORT).show();

@@ -20,6 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -31,7 +32,7 @@ import prefs.UserSession;
 
 public class LoginActivity extends Activity {
 
-    private EditText username;
+    private EditText id;
     private EditText password;
     private static final String TAG = LoginActivity.class.getSimpleName();
     private ProgressDialog progressDialog;
@@ -50,12 +51,12 @@ public class LoginActivity extends Activity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!username.getText().toString().isEmpty() || !password.getText().toString().isEmpty()){
+                if (!id.getText().toString().isEmpty() || !password.getText().toString().isEmpty()){
 
-                    String uName = username.getText().toString().trim();
+                    String uId = id.getText().toString().trim();
                     String pass  = password.getText().toString().trim();
 
-                    login(uName, pass);
+                    login(uId, pass);
                 }
                 else{
                     AlertDialog.Builder loginerror = new AlertDialog.Builder(LoginActivity.this);
@@ -81,7 +82,7 @@ public class LoginActivity extends Activity {
 
     }
     public void init(){
-        username = (EditText) findViewById(R.id.username_i);
+        id = (EditText) findViewById(R.id.id_i);
         password = (EditText) findViewById(R.id.password_i);
         progressDialog  = new ProgressDialog(this);
         session         = new UserSession(this);
@@ -89,7 +90,7 @@ public class LoginActivity extends Activity {
 
     }
 
-    private void login(final String email, final String password){
+    private void login(final String id, final String password){
         // Tag used to cancel the request
         String tag_string_req = "req_login";
         progressDialog.setMessage("Logging in...");
@@ -109,15 +110,13 @@ public class LoginActivity extends Activity {
 
                     // Check for error node in json
                     if (!error) {
-                        // Now store the user in SQLite
-                        JSONObject user = jObj.getJSONObject("user");
-                        String uName = user.getString("username");
-                        String email = user.getString("email");
-                        String uPass = user.getString("password");
+                        JSONArray showrooms = jObj.getJSONArray("showroom");
+                        JSONObject showroom = showrooms.getJSONObject(0);
+                        String uId = showroom.getString("showroom_id");
+                        String uPass = showroom.getString("password");
 
                         // Inserting row in users table
-                        userInfo.setEmail(email);
-                        userInfo.setUsername(uName);
+                        userInfo.setId(uId);
                         userInfo.setPassword(uPass);
                         session.setLoggedin(true);
 
@@ -127,6 +126,7 @@ public class LoginActivity extends Activity {
                         // Error in login. Get the error message
                         String errorMsg = jObj.getString("error_msg");
                         toast(errorMsg);
+                        Log.d("error login ",errorMsg);
                         progressDialog.hide();
 
                     }
@@ -134,6 +134,7 @@ public class LoginActivity extends Activity {
                     // JSON error
                     e.printStackTrace();
                     toast("Json error: " + e.getMessage());
+                    Log.d("error catch ",e.getMessage());
                 }
 
             }
@@ -152,7 +153,7 @@ public class LoginActivity extends Activity {
                 Log.d(TAG, "now here");
                 // Posting parameters to login url
                 Map<String, String> params = new HashMap<>();
-                params.put("email", email);
+                params.put("showroom_id", id);
                 params.put("password", password);
 
                 return params;

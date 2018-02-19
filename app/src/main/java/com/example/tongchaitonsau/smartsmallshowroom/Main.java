@@ -71,7 +71,7 @@ public class Main extends Fragment{
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    String date_,time_,music_box_id_,showroom_id_,position_;
+    String datetime_,music_box_id_,showroom_id_,position_;
 
     ArrayList<String> name = new ArrayList<String>();
     ArrayList<String> price = new ArrayList<String>();
@@ -84,73 +84,73 @@ public class Main extends Fragment{
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    MainActivity mainactivity;
 
-    public final String ACTION_USB_PERMISSION = "com.hariharan.arduinousb.USB_PERMISSION";
-    Button connect ,disconnect;
+//    public final String ACTION_USB_PERMISSION = "com.hariharan.arduinousb.USB_PERMISSION";
     //TextView textView;
-    UsbManager usbManager;
-    UsbDevice device;
-    UsbSerialDevice serialPort;
-    UsbDeviceConnection connection;
+//    UsbManager usbManager;
+//    UsbDevice device;
+//    UsbSerialDevice serialPort;
+//    UsbDeviceConnection connection;
     private ProgressDialog progressDialog;
-
-    UsbSerialInterface.UsbReadCallback mCallback = new UsbSerialInterface.UsbReadCallback() { //Defining a Callback which triggers whenever data is read.
-        @Override
-        public void onReceivedData(byte[] arg0) {
-            String data = null;
-            try {
-                data = new String(arg0, "UTF-8");
-                data.concat("/n");
-                //tvAppend(textView, data);
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-
-
-        }
-    };
-    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() { //Broadcast Receiver to automatically start and stop the Serial connection.
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(ACTION_USB_PERMISSION)) {
-                boolean granted = intent.getExtras().getBoolean(UsbManager.EXTRA_PERMISSION_GRANTED);
-                if (granted) {
-                    connection = usbManager.openDevice(device);
-                    serialPort = UsbSerialDevice.createUsbSerialDevice(device, connection);
-                    if (serialPort != null) {
-                        if (serialPort.open()) { //Set Serial Connection Parameters.
-                            setUiEnabled(true);
-                            serialPort.setBaudRate(9600);
-                            serialPort.setDataBits(UsbSerialInterface.DATA_BITS_8);
-                            serialPort.setStopBits(UsbSerialInterface.STOP_BITS_1);
-                            serialPort.setParity(UsbSerialInterface.PARITY_NONE);
-                            serialPort.setFlowControl(UsbSerialInterface.FLOW_CONTROL_OFF);
-                            serialPort.read(mCallback);
-                            //tvAppend(textView,"Serial Connection Opened!\n");
-                            toast("Serial Connection Opened!");
-
-                        } else {
-                            Log.d("SERIAL", "PORT NOT OPEN");
-                        }
-                    } else {
-                        Log.d("SERIAL", "PORT IS NULL");
-                    }
-                } else {
-                    Log.d("SERIAL", "PERM NOT GRANTED");
-                }
-            }
-            else if (intent.getAction().equals(UsbManager.ACTION_USB_DEVICE_ATTACHED)) {
-                //onClickCon(con);
-            }
-            else if (intent.getAction().equals(UsbManager.ACTION_USB_DEVICE_DETACHED)) {
-                //onClickDiscon(discon);
-
-            }
-        }
-
-        ;
-    };
-
+//
+//    UsbSerialInterface.UsbReadCallback mCallback = new UsbSerialInterface.UsbReadCallback() { //Defining a Callback which triggers whenever data is read.
+//        @Override
+//        public void onReceivedData(byte[] arg0) {
+//            String data = null;
+//            try {
+//                data = new String(arg0, "UTF-8");
+//                data.concat("/n");
+//                //tvAppend(textView, data);
+//            } catch (UnsupportedEncodingException e) {
+//                e.printStackTrace();
+//            }
+//
+//
+//        }
+//    };
+//    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() { //Broadcast Receiver to automatically start and stop the Serial connection.
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            if (intent.getAction().equals(ACTION_USB_PERMISSION)) {
+//                boolean granted = intent.getExtras().getBoolean(UsbManager.EXTRA_PERMISSION_GRANTED);
+//                if (granted) {
+//                    connection = usbManager.openDevice(device);
+//                    serialPort = UsbSerialDevice.createUsbSerialDevice(device, connection);
+//                    if (serialPort != null) {
+//                        if (serialPort.open()) { //Set Serial Connection Parameters.
+//                            setUiEnabled(true);
+//                            serialPort.setBaudRate(9600);
+//                            serialPort.setDataBits(UsbSerialInterface.DATA_BITS_8);
+//                            serialPort.setStopBits(UsbSerialInterface.STOP_BITS_1);
+//                            serialPort.setParity(UsbSerialInterface.PARITY_NONE);
+//                            serialPort.setFlowControl(UsbSerialInterface.FLOW_CONTROL_OFF);
+//                            serialPort.read(mCallback);
+//                            //tvAppend(textView,"Serial Connection Opened!\n");
+//                            toast("Serial Connection Opened!");
+//
+//                        } else {
+//                            Log.d("SERIAL", "PORT NOT OPEN");
+//                        }
+//                    } else {
+//                        Log.d("SERIAL", "PORT IS NULL");
+//                    }
+//                } else {
+//                    Log.d("SERIAL", "PERM NOT GRANTED");
+//                }
+//            }
+//            else if (intent.getAction().equals(UsbManager.ACTION_USB_DEVICE_ATTACHED)) {
+//                //onClickCon(con);
+//            }
+//            else if (intent.getAction().equals(UsbManager.ACTION_USB_DEVICE_DETACHED)) {
+//                //onClickDiscon(discon);
+//
+//            }
+//        }
+//
+//        ;
+//    };
+//
 
 
 
@@ -194,20 +194,21 @@ public class Main extends Fragment{
 
 
     public void setUiEnabled(boolean bool) {
-        connect.setEnabled(!bool);
-        disconnect.setEnabled(bool);
+//        connect.setEnabled(!bool);
+//        disconnect.setEnabled(bool);
         gridView.setEnabled(bool);
 
 
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_main,container,false);
         progressDialog  = new ProgressDialog(getActivity());
-        getData("1");
+
+        mainactivity = (MainActivity) getActivity();
+        getData(mainactivity.getShowroom_id());
 
         stubGrid = (ViewStub) view.findViewById (R.id.stub_grid);
         stubGrid.inflate();
@@ -221,55 +222,55 @@ public class Main extends Fragment{
 //        gridViewAdapter = new GridViewAdapter(getActivity(), R.layout.grid_item, productList);
 //        gridView.setAdapter(gridViewAdapter);
 
-        usbManager = (UsbManager) getActivity().getSystemService(this.getActivity().USB_SERVICE);
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(ACTION_USB_PERMISSION);
-        filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
-        filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
-        getActivity().registerReceiver(broadcastReceiver, filter);
+//        usbManager = (UsbManager) getActivity().getSystemService(this.getActivity().USB_SERVICE);
+//        IntentFilter filter = new IntentFilter();
+//        filter.addAction(ACTION_USB_PERMISSION);
+//        filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
+//        filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
+//        getActivity().registerReceiver(broadcastReceiver, filter);
 
 
-        connect  = (Button) view.findViewById(R.id.connect_btn);
-
-        connect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                HashMap<String, UsbDevice> usbDevices = usbManager.getDeviceList();
-                if (!usbDevices.isEmpty()) {
-                    boolean keep = true;
-                    for (Map.Entry<String, UsbDevice> entry : usbDevices.entrySet()) {
-                        device = entry.getValue();
-                        int deviceVID = device.getVendorId();
-                        if (deviceVID == 0x2A03)//Arduino Vendor ID
-                        {
-                            PendingIntent pi = PendingIntent.getBroadcast(getActivity(), 0, new Intent(ACTION_USB_PERMISSION), 0);
-                            usbManager.requestPermission(device, pi);
-                            setUiEnabled(true);
-                            keep = false;
-                        } else {
-                            connection = null;
-                            device = null;
-                        }
-
-                        if (!keep)
-                            break;
-                    }
-                }
-
-
-            }
-        });
-
-        disconnect  = (Button) view.findViewById(R.id.disconnect_btn);
-        disconnect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setUiEnabled(false);
-                serialPort.close();
-                //tvAppend(textView,"\nSerial Connection Closed! \n");
-                toast("Serial Connection Closed!");
-            }
-        });
+//        connect  = (Button) view.findViewById(R.id.connect_btn);
+//
+//        connect.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                HashMap<String, UsbDevice> usbDevices = usbManager.getDeviceList();
+//                if (!usbDevices.isEmpty()) {
+//                    boolean keep = true;
+//                    for (Map.Entry<String, UsbDevice> entry : usbDevices.entrySet()) {
+//                        device = entry.getValue();
+//                        int deviceVID = device.getVendorId();
+//                        if (deviceVID == 0x2A03)//Arduino Vendor ID
+//                        {
+//                            PendingIntent pi = PendingIntent.getBroadcast(getActivity(), 0, new Intent(ACTION_USB_PERMISSION), 0);
+//                            usbManager.requestPermission(device, pi);
+//                            setUiEnabled(true);
+//                            keep = false;
+//                        } else {
+//                            connection = null;
+//                            device = null;
+//                        }
+//
+//                        if (!keep)
+//                            break;
+//                    }
+//                }
+//
+//
+//            }
+//        });
+//
+//        disconnect  = (Button) view.findViewById(R.id.disconnect_btn);
+//        disconnect.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                setUiEnabled(false);
+//                serialPort.close();
+//                //tvAppend(textView,"\nSerial Connection Closed! \n");
+//                toast("Serial Connection Closed!");
+//            }
+//        });
 
 //        open  = (Button) view.findViewById(R.id.open_btn);
 //        open.setOnClickListener(new View.OnClickListener() {
@@ -289,8 +290,9 @@ public class Main extends Fragment{
 //                toast("Off");
 //            }
 //        });
+//
 
-        setUiEnabled(false);
+        //setUiEnabled(false);
 
 
 
@@ -316,37 +318,44 @@ public class Main extends Fragment{
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-            //store transactions
-            Calendar c = Calendar.getInstance();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd");
-            SimpleDateFormat sdf2 = new SimpleDateFormat("HH:mm:ss");
-            date_ = sdf.format(c.getTime());
-            time_ = sdf2.format(c.getTime());
-            music_box_id_ = music_box_id.get(i);
-            showroom_id_  = "5";
-            position_ = position.get(i);
-            storeTransactions(date_,time_,music_box_id_,showroom_id_,position_);
+            if(mainactivity.getStatusSerial()==true){
 
-            Log.d("datetime2************",date_ + " Time =="+time_
-            +"id=="+music_box_id_+"show id =="+showroom_id_+"pos=="+position_);
+                //store transactions
+                Calendar c = Calendar.getInstance();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd");
+                SimpleDateFormat sdf2 = new SimpleDateFormat("HH:mm:ss");
+                datetime_ = sdf.format(c.getTime())+" "+sdf2.format(c.getTime());
+                music_box_id_ = music_box_id.get(i);
+                showroom_id_  = "5";
+                position_ = position.get(i);
+                storeTransactions(datetime_,music_box_id_,showroom_id_,position_);
+
+                Log.d("datetime2************",datetime_
+                        +"id=="+music_box_id_+"show id =="+showroom_id_+"pos=="+position_);
 
 
-            //go to purchase
-            Intent goPurchase = new Intent(getActivity(),PurchaseActivity.class);
-            //goPurchase.putExtra("PASS_NAME",productList.get(i).getName());
-            goPurchase.putExtra("PASS_NAME",name.get(i));
-            goPurchase.putExtra("POSITION", Integer.toString(i+1));
-            //goPurchase.putExtra("MUSIC_BOX_ID",productList.get(i).getId());
-            goPurchase.putExtra("MUSIC_BOX_ID",music_box_id.get(i));
-            startActivity(goPurchase);
+                //go to purchase
+                Intent goPurchase = new Intent(getActivity(),PurchaseActivity.class);
+                //goPurchase.putExtra("PASS_NAME",productList.get(i).getName());
+                goPurchase.putExtra("PASS_NAME",name.get(i));
+                goPurchase.putExtra("POSITION", Integer.toString(i+1));
+                //goPurchase.putExtra("MUSIC_BOX_ID",productList.get(i).getId());
+                goPurchase.putExtra("MUSIC_BOX_ID",music_box_id.get(i));
+                startActivity(goPurchase);
+            }
+            else {
+
+                toast("please connect serial");
+            }
+
         }
     };
 
-    private void storeTransactions (final String date_data, final String time_data, final String music_box_id_data
+    private void storeTransactions (final String datetime_data, final String music_box_id_data
             , final String showroom_id_data, final String position_data){
         // Tag used to cancel the request
         String tag_string_req = "req_storetransaction";
-        progressDialog.setMessage("Storing up...");
+        progressDialog.setMessage("sending transaction...");
         progressDialog.show();
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
@@ -363,17 +372,19 @@ public class Main extends Fragment{
 
                     // Check for error node in json
                     if (!error) {
-                        JSONObject Transactions = jObj.getJSONObject("Transactions");
-                        String _date = Transactions.getString("date");
-                        String _time= Transactions.getString("time");
-                        String _showroom_id = Transactions.getString("showroom_id");
-                        String _music_box_id= Transactions.getString("music_box_id");
+                        JSONObject Transaction = jObj.getJSONObject("Transactions");
+                        String _datetime = Transaction.getString("datetime");
+                        String _showroom_id = Transaction.getString("showroom_id");
+                        String _music_box_id= Transaction.getString("music_box_id");
+                        String _position= Transaction.getString("position");
+                        //Log.d(TAG,"success store transaction");
+                        toast("success");
 
 
                     } else {
                         // Error in login. Get the error message
                         String errorMsg = jObj.getString("error_msg");
-                        Log.d("error --------- in ", errorMsg);
+                       // Log.d("error --------- in ", errorMsg);
                         toast(errorMsg);
                         progressDialog.hide();
                     }
@@ -381,8 +392,7 @@ public class Main extends Fragment{
                     // JSON error
                     e.printStackTrace();
                     progressDialog.hide();
-                    toast("Send transaction Success");
-                    Log.d("error ---------2", e.getMessage());
+                    //Log.d("error ---------2", e.getMessage());
                     //toast("Json error: " + e.getMessage());
 
                 }
@@ -403,8 +413,7 @@ public class Main extends Fragment{
             protected Map<String, String> getParams() {
                 // Posting parameters to login url
                 Map<String, String> params = new HashMap<>();
-                params.put("date", date_data);
-                params.put("time", time_data);
+                params.put("datetime", datetime_data);
                 params.put("music_box_id", music_box_id_data);
                 params.put("showroom_id", showroom_id_data);
                 params.put("position", position_data);
@@ -447,12 +456,6 @@ public class Main extends Fragment{
                     if (!error) {
                         // Now store the user in SQLite
                         JSONArray music_boxs = jObj.getJSONArray("m_and_s");
-//                        ArrayList<String> name = new ArrayList<String>();
-//                        ArrayList<String> price = new ArrayList<String>();
-//                        ArrayList<String> music_box_id = new ArrayList<String>();
-//                        ArrayList<String> detail = new ArrayList<String>();
-//                        ArrayList<String> position = new ArrayList<String>();
-
                        for (int i =0; i < music_boxs.length();i++){
                            JSONObject music = music_boxs.getJSONObject(i);
 
