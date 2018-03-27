@@ -2,15 +2,14 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFF">
+    android:background="@drawable/soft">
 
     <GridView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:id="@+id/my_grid"
-        android:layout_marginTop="100dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginTop="70dp"
         android:columnWidth="200dp"
         android:gravity="center|bottom"
 

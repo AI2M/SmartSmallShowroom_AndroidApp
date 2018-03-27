@@ -24,11 +24,8 @@ public class PagerAdapter extends FragmentStatePagerAdapter{
                 Main main = new Main();
                 return main;
             case 1:
-                Control control = new Control();
-                return control;
-            case 2:
                 Design design = new Design();
-                return  design;
+                return design;
             default:
                 return null;
         }

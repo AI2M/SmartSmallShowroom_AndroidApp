@@ -11,13 +11,23 @@ public class Product {
     private String price;
     private String detail;
     private String url;
+    private String music_id;
 
-    public Product(int id, String name, String detail, String price){
+    public Product(int id, String name, String detail, String price ,String music_id){
         this.id = id;
         this.name = name;
         this.price  = price;
         this.detail = detail;
+        this.music_id = music_id;
     }
+    public String getMusic_id() {
+        return music_id;
+    }
+
+    public void setMusic_id(String detail) {
+        this.music_id = music_id;
+    }
+
     public String getDetail() {
         return detail;
     }

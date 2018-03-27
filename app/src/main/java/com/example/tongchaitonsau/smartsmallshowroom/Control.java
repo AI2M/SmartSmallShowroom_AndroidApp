@@ -75,11 +75,11 @@ public class Control extends Fragment implements View.OnClickListener{
     String musicSelected;
 
     //usb
-    public final String ACTION_USB_PERMISSION = "com.hariharan.arduinousb.USB_PERMISSION";
-    UsbManager usbManager;
-    UsbDevice device;
-    UsbSerialDevice serialPort;
-    UsbDeviceConnection connection;
+//    public final String ACTION_USB_PERMISSION = "com.hariharan.arduinousb.USB_PERMISSION";
+//    UsbManager usbManager;
+//    UsbDevice device;
+//    UsbSerialDevice serialPort;
+//    UsbDeviceConnection connection;
 
     //end var
 
@@ -122,33 +122,33 @@ public class Control extends Fragment implements View.OnClickListener{
         progressDialog  = new ProgressDialog(getActivity());
         mainactivity = (MainActivity) getActivity();
         //usb
-        usbManager = (UsbManager) getActivity().getSystemService(getActivity().USB_SERVICE);
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(ACTION_USB_PERMISSION);
-        filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
-        filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
-        getActivity().registerReceiver(broadcastReceiver, filter);
-
-        HashMap<String, UsbDevice> usbDevices = usbManager.getDeviceList();
-        if (!usbDevices.isEmpty()) {
-            boolean keep = true;
-            for (Map.Entry<String, UsbDevice> entry : usbDevices.entrySet()) {
-                device = entry.getValue();
-                int deviceVID = device.getVendorId();
-                if (deviceVID == 0x2A03)//Arduino Vendor ID
-                {
-                    PendingIntent pi = PendingIntent.getBroadcast(getActivity(), 0, new Intent(ACTION_USB_PERMISSION), 0);
-                    usbManager.requestPermission(device, pi);
-                    keep = false;
-                } else {
-                    connection = null;
-                    device = null;
-                }
-
-                if (!keep)
-                    break;
-            }
-        }
+//        usbManager = (UsbManager) getActivity().getSystemService(getActivity().USB_SERVICE);
+//        IntentFilter filter = new IntentFilter();
+//        filter.addAction(ACTION_USB_PERMISSION);
+//        filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
+//        filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
+//        getActivity().registerReceiver(broadcastReceiver, filter);
+//
+//        HashMap<String, UsbDevice> usbDevices = usbManager.getDeviceList();
+//        if (!usbDevices.isEmpty()) {
+//            boolean keep = true;
+//            for (Map.Entry<String, UsbDevice> entry : usbDevices.entrySet()) {
+//                device = entry.getValue();
+//                int deviceVID = device.getVendorId();
+//                if (deviceVID == 0x2A03)//Arduino Vendor ID
+//                {
+//                    PendingIntent pi = PendingIntent.getBroadcast(getActivity(), 0, new Intent(ACTION_USB_PERMISSION), 0);
+//                    usbManager.requestPermission(device, pi);
+//                    keep = false;
+//                } else {
+//                    connection = null;
+//                    device = null;
+//                }
+//
+//                if (!keep)
+//                    break;
+//            }
+//        }
         //checkbox
         view.findViewById(R.id.m1).setOnClickListener(this);
         view.findViewById(R.id.m2).setOnClickListener(this);
@@ -179,7 +179,7 @@ public class Control extends Fragment implements View.OnClickListener{
                 Log.d("musicSelected=",musicSelected);
                 String control = "mSelected = "+String.valueOf(mSelected)+ "lSelected = "+ String.valueOf(lSelected)
                         +"musicSelected = "+musicSelected;
-                serialPort.write(control.getBytes());
+//               mainactivity.getSerialPort().write(control.getBytes());
             }
         });
 
@@ -508,46 +508,46 @@ public class Control extends Fragment implements View.OnClickListener{
 
         }
     };
-    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() { //Broadcast Receiver to automatically start and stop the Serial connection.
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(ACTION_USB_PERMISSION)) {
-                boolean granted = intent.getExtras().getBoolean(UsbManager.EXTRA_PERMISSION_GRANTED);
-                if (granted) {
-                    connection = usbManager.openDevice(device);
-                    serialPort = UsbSerialDevice.createUsbSerialDevice(device, connection);
-                    if (serialPort != null) {
-                        if (serialPort.open()) { //Set Serial Connection Parameters.
-                            serialPort.setBaudRate(9600);
-                            serialPort.setDataBits(UsbSerialInterface.DATA_BITS_8);
-                            serialPort.setStopBits(UsbSerialInterface.STOP_BITS_1);
-                            serialPort.setParity(UsbSerialInterface.PARITY_NONE);
-                            serialPort.setFlowControl(UsbSerialInterface.FLOW_CONTROL_OFF);
-                            serialPort.read(mCallback);
-//                            String string = "ok_send".toString(); //send data
-//                            serialPort.write(string.getBytes());
-
-                        } else {
-                            Log.d("SERIAL", "PORT NOT OPEN");
-                        }
-                    } else {
-                        Log.d("SERIAL", "PORT IS NULL");
-                    }
-                } else {
-                    Log.d("SERIAL", "PERM NOT GRANTED");
-                }
-            }
-            else if (intent.getAction().equals(UsbManager.ACTION_USB_DEVICE_ATTACHED)) {
-                //onClickCon(con);
-            }
-            else if (intent.getAction().equals(UsbManager.ACTION_USB_DEVICE_DETACHED)) {
-                //onClickDiscon(discon);
-
-            }
-        }
-
-        ;
-    };
+//    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() { //Broadcast Receiver to automatically start and stop the Serial connection.
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            if (intent.getAction().equals(ACTION_USB_PERMISSION)) {
+//                boolean granted = intent.getExtras().getBoolean(UsbManager.EXTRA_PERMISSION_GRANTED);
+//                if (granted) {
+//                    connection = usbManager.openDevice(device);
+//                    serialPort = UsbSerialDevice.createUsbSerialDevice(device, connection);
+//                    if (serialPort != null) {
+//                        if (serialPort.open()) { //Set Serial Connection Parameters.
+//                            serialPort.setBaudRate(9600);
+//                            serialPort.setDataBits(UsbSerialInterface.DATA_BITS_8);
+//                            serialPort.setStopBits(UsbSerialInterface.STOP_BITS_1);
+//                            serialPort.setParity(UsbSerialInterface.PARITY_NONE);
+//                            serialPort.setFlowControl(UsbSerialInterface.FLOW_CONTROL_OFF);
+//                            serialPort.read(mCallback);
+////                            String string = "ok_send".toString(); //send data
+////                            serialPort.write(string.getBytes());
+//
+//                        } else {
+//                            Log.d("SERIAL", "PORT NOT OPEN");
+//                        }
+//                    } else {
+//                        Log.d("SERIAL", "PORT IS NULL");
+//                    }
+//                } else {
+//                    Log.d("SERIAL", "PERM NOT GRANTED");
+//                }
+//            }
+//            else if (intent.getAction().equals(UsbManager.ACTION_USB_DEVICE_ATTACHED)) {
+//                //onClickCon(con);
+//            }
+//            else if (intent.getAction().equals(UsbManager.ACTION_USB_DEVICE_DETACHED)) {
+//                //onClickDiscon(discon);
+//
+//            }
+//        }
+//
+//        ;
+//    };
     private void toast(String x){
         Toast.makeText(getActivity(), x, Toast.LENGTH_SHORT).show();
     }

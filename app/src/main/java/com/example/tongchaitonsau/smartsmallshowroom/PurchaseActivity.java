@@ -178,7 +178,7 @@ public class PurchaseActivity extends AppCompatActivity {
                             serialPort.setParity(UsbSerialInterface.PARITY_NONE);
                             serialPort.setFlowControl(UsbSerialInterface.FLOW_CONTROL_OFF);
                             serialPort.read(mCallback);
-                            String string = "ok_send".toString();
+                            String string = ("ok_send,"+position).toString();
                             serialPort.write(string.getBytes());
 
                             //tvAppend(textView,"Serial Connection Opened!\n");
@@ -217,7 +217,7 @@ public class PurchaseActivity extends AppCompatActivity {
                        // music.seekTo(posmusic);
                         //music.start();
                         playMusicfromUrl("start");
-                        String string = "ok_send".toString();
+                        String string = ("ok_send,"+position).toString();
                         serialPort.write(string.getBytes());
                         toast("open");
                         play.setEnabled(false);
@@ -228,7 +228,7 @@ public class PurchaseActivity extends AppCompatActivity {
                         //posmusic = music.getCurrentPosition();
                         playMusicfromUrl("stop");
 
-                        String string2 = "no_send".toString();
+                        String string2 = ("no_send,"+position).toString();
                         serialPort.write(string2.getBytes());
                         toast("off");
                         stop.setEnabled(false);
@@ -323,7 +323,7 @@ public class PurchaseActivity extends AppCompatActivity {
         if(item.getItemId()== android.R.id.home)
         {
             this.finish();
-            String string2 = "no_send".toString();
+            String string2 = ("no_send,"+position).toString();
             serialPort.write(string2.getBytes());
 
             //music.release();

@@ -74,6 +74,9 @@ public class MainActivity extends AppCompatActivity implements Main.OnFragmentIn
 
     private boolean statusSerial = false;
 
+    public  UsbSerialDevice getSerialPort(){
+        return  serialPort;
+    }
     public boolean getStatusSerial() {
         return statusSerial;
     }
@@ -99,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements Main.OnFragmentIn
 
         TabLayout tabLayout = (TabLayout)findViewById(R.id.tablayout);
         tabLayout.addTab(tabLayout.newTab().setText("Music Box Showroom"));
-        tabLayout.addTab(tabLayout.newTab().setText("Control Showroom"));
+//        tabLayout.addTab(tabLayout.newTab().setText("Control Showroom"));
         tabLayout.addTab(tabLayout.newTab().setText("Questionnaire"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
@@ -207,8 +210,8 @@ public class MainActivity extends AppCompatActivity implements Main.OnFragmentIn
         mymenu = menu;
         setUiEnabled(false);
 
-        return super.onCreateOptionsMenu(menu);
-        //return  true;
+       return super.onCreateOptionsMenu(menu);
+       // return  true;
     }
 
     @Override

@@ -61,7 +61,7 @@ public class GridViewAdapter extends ArrayAdapter<Product> {
         Product product = getItem(position);
         img = (ImageView) v.findViewById(R.id.image_a);
         TextView txtTitle = (TextView) v.findViewById(R.id.name_a);
-        TextView txtDescription = (TextView) v.findViewById(R.id.price_a);
+        TextView txtDescription = (TextView) v.findViewById(R.id.music_id);
         Picasso.with(getContext()).load(url).resize(100,100).into(img);
         img.setTag(url);
 
@@ -73,7 +73,7 @@ public class GridViewAdapter extends ArrayAdapter<Product> {
 
        // img.setImageResource(product.getId());
         txtTitle.setText(product.getName());
-        txtDescription.setText(product.getPrice());
+        txtDescription.setText("id : "+product.getMusic_id());
 
 
 

@@ -3,6 +3,8 @@ package com.example.tongchaitonsau.smartsmallshowroom;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -33,6 +36,10 @@ import com.android.volley.toolbox.StringRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,10 +67,11 @@ public class Design extends Fragment implements View.OnClickListener {
     MainActivity mainactivity;
 
     RadioGroup ageGroup,salaryGroup;
-    EditText tel;
+    EditText tel,facebook;
+    ImageView imageView;
 
 
-    private String sex_,job_,age_="",phone_num_,salary_="";
+    private String sex_,job_,age_="",phone_num_,salary_="",customer_id="",facebook_="";
     private ProgressDialog progressDialog;
 
     public Design() {
@@ -122,11 +130,12 @@ public class Design extends Fragment implements View.OnClickListener {
 
             @Override
             public void afterTextChanged(Editable s) {
-                validateEditText(); // OR validation can be specific (only for this EditText)
+                //validateEditText(); // OR validation can be specific (only for this EditText)
                 validatePhone();
             }
         });
-        //submit = (Button)rootView.findViewById(R.id.submit_question);
+
+        facebook =  (EditText)rootView.findViewById(R.id.facebook_edt);
 
         Sex(rootView);
         Job(rootView);
@@ -135,6 +144,14 @@ public class Design extends Fragment implements View.OnClickListener {
         //age
          ageGroup = (RadioGroup)rootView.findViewById(R.id.age_data);
          salaryGroup = (RadioGroup)rootView.findViewById(R.id.salary_data);
+
+        imageView = (ImageView)rootView.findViewById(R.id.promo_image);
+
+        try {
+            threadImage();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         //rootView.findViewById(R.id.age_data).setOnClickListener(this);
         rootView.findViewById(R.id.age15low_data).setOnClickListener(this);
@@ -156,21 +173,25 @@ public class Design extends Fragment implements View.OnClickListener {
         return rootView;
     }
 
-    private boolean validateEditText() {
-        boolean isValidated = true;
-        if (tel.getText().toString().length() == 0) {
-            tel.setError("Required");
-            isValidated = false;
-        }
-        return isValidated;
-    }
+//    private boolean validateEditText() {
+//        boolean isValidated = true;
+//        if (tel.getText().toString().length() == 0) {
+//            tel.setError("Required");
+//            isValidated = false;
+//        }
+//        return isValidated;
+//    }
     private boolean validatePhone() {
 
         boolean phoneIsValidated = true;
         String text = tel.getText().toString();
-        if (!text.matches("^(?:0091|\\\\+91|0)[7-9][0-9]{7,8}$")) {
-            phoneIsValidated = false;
-            tel.setError("Invalid format");
+        if(text.isEmpty()){
+        }
+        else{
+            if (!text.matches("^(?:0091|\\\\+91|0)[7-9][0-9]{7,8}$")) {
+                phoneIsValidated = false;
+                tel.setError("Invalid format");
+            }
         }
         return phoneIsValidated;
     }
@@ -227,16 +248,24 @@ public class Design extends Fragment implements View.OnClickListener {
 
             case R.id.submit_question:
 
-                if(!validatePhone()&&!validateEditText()){
+                if(!validatePhone()){
                     toast("wrong phone number");
                 }
                 else  if(salary_.toString().isEmpty()||age_.toString().isEmpty()){
                     toast("please enter all questions");
                 }
                 else {
+                    Calendar c = Calendar.getInstance();
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd");
+                    SimpleDateFormat sdf2 = new SimpleDateFormat("HH:mm:ss");
+                    String datetime = sdf.format(c.getTime())+sdf2.format(c.getTime());
+                    customer_id = "sh"+mainactivity.getShowroom_id()+"t"+datetime;
+                    Log.d("datetime ======>",customer_id);
                     phone_num_ = tel.getText().toString();
-                    storeCustomer(sex_,job_,age_,phone_num_,salary_,mainactivity.getShowroom_id());
+                    facebook_ = facebook.getText().toString();
+                    storeCustomer(sex_,job_,age_,phone_num_,facebook_,salary_,mainactivity.getShowroom_id(),customer_id);
                     tel.setText("");
+                    facebook.setText("");
                     ageGroup.clearCheck();
                     salaryGroup.clearCheck();
 
@@ -339,7 +368,7 @@ public class Design extends Fragment implements View.OnClickListener {
     //store data into database
 
     private void storeCustomer (final String sex, final String job, final String age
-            , final String phone_num, final String salary ,final String showroom_id){
+            , final String phone_num,final String facebook, final String salary ,final String showroom_id, final String customer_id){
         // Tag used to cancel the request
         String tag_string_req = "req_storecustomer";
         progressDialog.setMessage("sending customer...");
@@ -366,6 +395,7 @@ public class Design extends Fragment implements View.OnClickListener {
                         String phone_num = Customer.getString("phone_num");
                         String  salary = Customer.getString("salary");
                         String  showroom_id = Customer.getString("showroom_id");
+                        String  customer_id = Customer.getString("customer_id");
 
 
                     } else {
@@ -407,6 +437,8 @@ public class Design extends Fragment implements View.OnClickListener {
                 params.put("phone_num", phone_num);
                 params.put("salary", salary);
                 params.put("showroom_id", showroom_id);
+                params.put("customer_id", customer_id);
+                params.put("facebook", facebook);
 
                 return params;
             }
@@ -419,6 +451,31 @@ public class Design extends Fragment implements View.OnClickListener {
 
     private void toast(String x){
         Toast.makeText(getActivity(), x, Toast.LENGTH_SHORT).show();
+    }
+
+    private void threadImage() throws IOException {
+        final URL url = new URL("http://202.28.24.69/~oasys10/SSS_web/images/promotions/showroom1.png");
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                Bitmap bmp = null;
+                try {
+                    bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                final Bitmap finalBmp = bmp;
+                imageView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        imageView.setImageBitmap(finalBmp);
+                    }
+                });
+            }
+        }).start();
     }
 
 

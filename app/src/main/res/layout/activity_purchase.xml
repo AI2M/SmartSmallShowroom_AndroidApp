@@ -44,24 +44,29 @@
         android:layout_marginTop="50dp"
         android:max="100"
         android:progress="70" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
         android:gravity="center"
-        android:layout_marginTop="50dp">
+        android:orientation="horizontal">
+
         <Button
             android:id="@+id/play_btn"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:text="Play"/>
+            android:text="Play" />
+
         <Button
             android:id="@+id/stop_btn"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:text="Stop"/>
+            android:text="Stop" />
 
     </LinearLayout>
 
 
 </LinearLayout>
+

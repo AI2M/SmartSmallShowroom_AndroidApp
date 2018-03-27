@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     tools:context="com.example.tongchaitonsau.smartsmallshowroom.MainActivity"
     android:id="@+id/main_i"
-    android:background="#FFFF"
     android:orientation="vertical"
     android:gravity="center">
 
@@ -16,7 +15,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tablayout"
-        android:background="@color/colorPrimary"
+        android:background="#D7BDE2"
+        app:tabSelectedTextColor="#FFFF"
         android:minHeight="?attr/actionBarSize"
         android:theme= "@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 

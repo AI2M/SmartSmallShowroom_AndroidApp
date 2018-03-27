@@ -8,11 +8,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +23,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -151,8 +155,6 @@ public class Main extends Fragment{
 //        ;
 //    };
 //
-
-
 
 
 
@@ -306,7 +308,7 @@ public class Main extends Fragment{
 
             productList = new ArrayList<>();
             for(int i = 0 ; i<position.size() ;i++) {
-                productList.add(new Product(R.drawable.ic_music_note_black_24dp, name.get(i), detail.get(i), price.get(i)));
+                productList.add(new Product(R.drawable.ic_music_note_black_24dp, name.get(i), detail.get(i),price.get(i),music_box_id.get(i)));
 
 
             }
@@ -326,7 +328,7 @@ public class Main extends Fragment{
                 SimpleDateFormat sdf2 = new SimpleDateFormat("HH:mm:ss");
                 datetime_ = sdf.format(c.getTime())+" "+sdf2.format(c.getTime());
                 music_box_id_ = music_box_id.get(i);
-                showroom_id_  = "5";
+                showroom_id_  = mainactivity.getShowroom_id();
                 position_ = position.get(i);
                 storeTransactions(datetime_,music_box_id_,showroom_id_,position_);
 
