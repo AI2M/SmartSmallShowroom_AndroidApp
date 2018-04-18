@@ -54,6 +54,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 /**
@@ -89,6 +91,8 @@ public class Main extends Fragment{
 
     private OnFragmentInteractionListener mListener;
     MainActivity mainactivity;
+
+    int cTime=0;
 
 //    public final String ACTION_USB_PERMISSION = "com.hariharan.arduinousb.USB_PERMISSION";
     //TextView textView;
@@ -219,6 +223,39 @@ public class Main extends Fragment{
 
         gridView.setOnItemClickListener(onitemclick);
         stubGrid.setVisibility(View.VISIBLE);
+//
+//        cTime=0;
+//        Thread t = new Thread(){
+//            @Override
+//            public void run(){
+//                while (!isInterrupted()){
+//                    try{
+//                        Thread.sleep(1000);
+//
+//                        getActivity().runOnUiThread(new Runnable(){
+//                            @Override
+//                            public void  run(){
+//                                cTime++;
+//                                Log.d("cTime=",String.valueOf(cTime));
+//                            }
+//                        });
+//                    }
+//                    catch(InterruptedException e){
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//        };
+//
+//        try{
+//            t.start();
+//        }
+//        catch (Exception e){
+//            e.printStackTrace();
+//        }
+
+
+
 
 //        getProductList();
 //        gridViewAdapter = new GridViewAdapter(getActivity(), R.layout.grid_item, productList);

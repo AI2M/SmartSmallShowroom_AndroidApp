@@ -121,7 +121,7 @@ public class PurchaseActivity extends AppCompatActivity {
         pass_name = getIntent().getStringExtra("PASS_NAME");
         position = getIntent().getStringExtra("POSITION");
         name = (TextView) findViewById(R.id.name_pc);
-        name.setText(pass_name+position);
+        name.setText(pass_name);
 
         //music = MediaPlayer.create(this,R.raw.paino);
 

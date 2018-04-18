@@ -45,7 +45,7 @@ public class GridViewAdapter extends ArrayAdapter<Product> {
             position =0;
         }
 
-        String url ="http://139.59.251.210/musicbox/musicbox"+Integer.toString(position+1)+".jpg";
+        String url ="http://202.28.24.69/~oasys10/SSS_web/images/music_boxes/music_pic"+Integer.toString(position+1)+".jpg";
 
 
 
