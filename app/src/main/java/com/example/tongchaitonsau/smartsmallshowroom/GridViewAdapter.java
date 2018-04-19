@@ -28,6 +28,7 @@ import java.util.List;
 
 public class GridViewAdapter extends ArrayAdapter<Product> {
     ImageView img;
+    MainActivity mainactivity;
 
     public GridViewAdapter(Context context, int resource, List<Product> objects) {
         super(context, resource, objects);
@@ -39,13 +40,15 @@ public class GridViewAdapter extends ArrayAdapter<Product> {
     @NonNull
     @Override
     public View getView( int position , View convertView, ViewGroup parent) {
+
         View v = convertView;
         if(position>8)
         {
             position =0;
         }
+        Product product = getItem(position);
 
-        String url ="http://202.28.24.69/~oasys10/SSS_web/images/music_boxes/music_pic"+Integer.toString(position+1)+".jpg";
+        String url ="http://202.28.24.69/~oasys10/SSS_web/images/music_boxes/music_pic"+product.getMusic_id()+".jpg";
 
 
 
@@ -58,7 +61,7 @@ public class GridViewAdapter extends ArrayAdapter<Product> {
 
 
 
-        Product product = getItem(position);
+
         img = (ImageView) v.findViewById(R.id.image_a);
         TextView txtTitle = (TextView) v.findViewById(R.id.name_a);
         TextView txtDescription = (TextView) v.findViewById(R.id.music_id);
@@ -73,7 +76,7 @@ public class GridViewAdapter extends ArrayAdapter<Product> {
 
        // img.setImageResource(product.getId());
         txtTitle.setText(product.getName());
-        txtDescription.setText("id : "+product.getMusic_id());
+        txtDescription.setText("Price : "+product.getPrice());
 
 
 

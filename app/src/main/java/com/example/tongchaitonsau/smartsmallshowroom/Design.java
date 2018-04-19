@@ -454,7 +454,8 @@ public class Design extends Fragment implements View.OnClickListener {
     }
 
     private void threadImage() throws IOException {
-        final URL url = new URL("http://202.28.24.69/~oasys10/SSS_web/images/promotions/showroom1.png");
+        final URL url = new URL("http://202.28.24.69/~oasys10/SSS_web/images/promotions/promotion_pic"
+                +mainactivity.getShowroom_id()+".jpg");
 
         new Thread(new Runnable() {
             @Override

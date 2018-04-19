@@ -380,6 +380,8 @@ public class Main extends Fragment{
                 goPurchase.putExtra("POSITION", Integer.toString(i+1));
                 //goPurchase.putExtra("MUSIC_BOX_ID",productList.get(i).getId());
                 goPurchase.putExtra("MUSIC_BOX_ID",music_box_id.get(i));
+                goPurchase.putExtra("DETAIL",detail.get(i));
+                goPurchase.putExtra("PRICE",price.get(i));
                 startActivity(goPurchase);
             }
             else {

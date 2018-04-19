@@ -31,6 +31,8 @@ import android.widget.Toast;
 import com.felhr.usbserial.UsbSerialDevice;
 import com.felhr.usbserial.UsbSerialInterface;
 
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -40,6 +42,8 @@ import java.util.Map;
 
 public class PurchaseActivity extends AppCompatActivity {
     private TextView name;
+    private TextView detail_;
+    private TextView price_;
     private ImageView pic_music;
     Button play,stop;
     int posmusic;
@@ -52,6 +56,10 @@ public class PurchaseActivity extends AppCompatActivity {
 
     String pass_name;
     String position;
+    String music_box_id;
+    String detail;
+    String price;
+    MainActivity mainActivity;
 
     private SeekBar volumeSeekbar = null;
 
@@ -120,13 +128,21 @@ public class PurchaseActivity extends AppCompatActivity {
     public void bindView(){
         pass_name = getIntent().getStringExtra("PASS_NAME");
         position = getIntent().getStringExtra("POSITION");
+        music_box_id = getIntent().getStringExtra("MUSIC_BOX_ID");
+        detail = getIntent().getStringExtra("DETAIL");
+        price = getIntent().getStringExtra("PRICE");
         name = (TextView) findViewById(R.id.name_pc);
         name.setText(pass_name);
+        detail_ = (TextView) findViewById(R.id.detail_pc);
+        price_ = (TextView) findViewById(R.id.price_pc);
+        detail_.setText("DETAIL : "+detail);
+        price_.setText("PRICE : "+price);
+
 
         //music = MediaPlayer.create(this,R.raw.paino);
 
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        myUri = "http://139.59.251.210/musicbox/musicbox"+position.toString()+".mp3"; // initialize Uri here
+        myUri = "http://202.28.24.69/~oasys10/SSS_web/sounds/music_sound"+music_box_id.toString()+".mp3"; // initialize Uri here
 
 
         play = (Button) findViewById(R.id.play_btn);
@@ -135,7 +151,7 @@ public class PurchaseActivity extends AppCompatActivity {
         play.setEnabled(false);
         stop.setEnabled(true);
 
-        new LoadimageTask().execute("http://139.59.251.210/musicbox/musicbox"+position.toString()+".jpg");
+        new LoadimageTask().execute("http://202.28.24.69/~oasys10/SSS_web/images/music_boxes/music_pic"+music_box_id.toString()+".jpg");
 
     }
 
