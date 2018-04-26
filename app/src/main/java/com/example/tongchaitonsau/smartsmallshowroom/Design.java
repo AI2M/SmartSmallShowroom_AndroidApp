@@ -338,11 +338,11 @@ public class Design extends Fragment implements View.OnClickListener {
                     //toast("government official");
                 }
                 else if(i == 2){
-                    job_ = "nurse";
+                    job_ = "student";
                     //toast("nurse");
                 }
                 else if(i == 3){
-                    job_ = "doctor";
+                    job_ = "doctor or nurse";
                     //toast("doctor");
                 }
                 else if(i == 4){

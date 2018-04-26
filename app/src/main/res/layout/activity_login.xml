@@ -12,8 +12,9 @@
         android:id="@+id/logo_i"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:src="@drawable/login_icon"
+        android:src="@drawable/music2"
         android:layout_gravity="center"
+        android:layout_marginBottom="50dp"
         android:layout_marginTop="100dp"/>
 
     <EditText
@@ -22,8 +23,9 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:hint="Username"
+        android:textSize="30dp"
         android:inputType="text"
-        android:drawableLeft="@drawable/ic_action_customer"
+        android:drawableLeft="@drawable/username"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"/>
     <EditText
@@ -32,17 +34,17 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:hint="Password"
+        android:textSize="30dp"
         android:inputType="textPassword"
-        android:drawableLeft="@drawable/ic_action_password"
+        android:drawableLeft="@drawable/password"
         android:layout_gravity="center"
         android:layout_marginTop="10dp" />
     <Button
         android:id="@+id/login_i"
         style="@style/Button_style"
-        android:text="Login"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:background="#76448A"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@drawable/login_btn"
         android:layout_gravity="center"
         android:textColor="#FFFF"
         android:layout_marginTop="30dp"/>

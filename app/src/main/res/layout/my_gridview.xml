@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:id="@+id/my_grid"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="50dp"
         android:columnWidth="200dp"
         android:gravity="center|bottom"
 
